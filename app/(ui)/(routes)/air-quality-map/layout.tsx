@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavbarMain } from './components/Navbar'
 
 
 const layout = async ({
@@ -7,12 +6,12 @@ const layout = async ({
 }: {
     children: React.ReactNode
 }) => {
-    
+
     return (
         <>
-            <section className="relative w-full">
-                {children}
-            </section>
+
+            {children}
+            <div className='h-1/2 md:h-0 '/>
         </>
     )
 }

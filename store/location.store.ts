@@ -18,6 +18,8 @@ export type LocationState = {
     error: string | null,
     temp: number | null,
     humidity: number | null,
+    co: number | null,
+    so2: number | null,
     wind: number | null,
     lastUpdated: Date | null,  
 
@@ -39,6 +41,8 @@ export const useLocationStore = create<LocationState>((set) => ({
     o3: null,
     temp: null,
     humidity: null,
+    co: null,
+    so2: null,
     wind: null,
     error: null,
     lastUpdated: null,

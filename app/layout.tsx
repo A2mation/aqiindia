@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Footer } from "@/components/aqi-ui/footer";
 import "./globals.css";
+import { NavbarMain } from "./(ui)/(root)/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,6 +71,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NavbarMain />
+
         {children}
         <Footer />
       </body>

@@ -147,6 +147,8 @@ export async function GET(req: NextRequest) {
                     pm10: airQualityResponse.data.iaqi?.pm10?.v,
                     no2: airQualityResponse.data.iaqi?.no2?.v,
                     o3: airQualityResponse.data.iaqi?.o3?.v,
+                    so2: airQualityResponse.data.iaqi?.so2?.v,
+                    co: airQualityResponse.data.iaqi?.co?.v,
                     temp: airQualityResponse.data.iaqi?.t?.v,
                     humidity: airQualityResponse.data.iaqi?.h?.v,
                     wind: airQualityResponse.data.iaqi?.w?.v,

@@ -86,6 +86,14 @@ export const getAQIColor = (aqi: number): string => {
     );
 };
 
+export const getAQITextColor = (aqi: number): string => {
+    return (
+        aqiColorPallet.find(
+            (p) => aqi >= p.range[0] && aqi <= p.range[1]
+        )?.text ?? "text-white"
+    );
+};
+
 export const getAQIBgColor = (aqi: number): string => {
     return (
         aqiColorPallet.find(

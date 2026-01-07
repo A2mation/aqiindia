@@ -7,6 +7,8 @@ import {
   Cloud,
   Droplets,
   Wind,
+  MapPin,
+  SquareDashed,
 } from "lucide-react"
 import dynamic from "next/dynamic"
 
@@ -39,7 +41,7 @@ export function AQIDashboard() {
 
   const [theme, setTheme] = useState<AQITheme>({
     label: "Unknown",
-    color: "#9CA3AF", 
+    color: "#9CA3AF",
     borderClass: "border-gray-200 dark:border-gray-800",
     bg: "from-white via-gray-50 to-gray-100 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900",
     text: "text-gray-700 dark:text-gray-300",
@@ -107,9 +109,11 @@ export function AQIDashboard() {
               </div>
 
               <div className="flex gap-2">
-                {/* <Button variant="outline" className="gap-2" onClick={detectGpsLocation}>
-                  <MapPin className="h-4 w-4" /> Locate me
-                </Button> */}
+                <a href="/air-quality-map">
+                  <Button variant="outline" className="gap-2 hover:cursor-pointer" >
+                    <MapPin className="h-4 w-4" /> View in Maps
+                  </Button>
+                </a>
                 <Button variant="outline" size="icon">
                   <Heart className="h-4 w-4" />
                 </Button>
