@@ -2,14 +2,7 @@
     "crons": [
         {
             "path": "/api/cron/popular-cities-aqi",
-            "schedule": "*/30 * * * *",
-            "headers": {
-                "Authorization": "Bearer @cron_secret"
-            }
-        },
-        {
-            "path": "/api/cron/hourly-aggregate",
-            "schedule": "0 * * * *",
+            "schedule": "5 0 * * *",
             "headers": {
                 "Authorization": "Bearer @cron_secret"
             }
