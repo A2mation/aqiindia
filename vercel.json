@@ -13,13 +13,6 @@
             "headers": {
                 "Authorization": "Bearer @cron_secret"
             }
-        },
-        {
-            "path": "/api/cron/daily-aggregate",
-            "schedule": "5 0 * * *",
-            "headers": {
-                "Authorization": "Bearer @cron_secret"
-            }
         }
     ]
 }
