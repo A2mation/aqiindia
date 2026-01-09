@@ -11,8 +11,6 @@ import {
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
-import { navItems } from "./navItems";
-import Link from "next/link";
 import { NavbarMiddleSection } from "./NavMiddleSection";
 
 export function NavbarMain() {
@@ -20,13 +18,16 @@ export function NavbarMain() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full m-0">
       <Navbar className="bg-white m-0 py-0">
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
 
-          <NavbarMiddleSection />
+          <div className="flex justify-center md:justify-start" >
+            <NavbarMiddleSection />
+          </div>
+
 
           <div className="flex items-center gap-4">
             <NavbarButton variant="secondary">Login</NavbarButton>
