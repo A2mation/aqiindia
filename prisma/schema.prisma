@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum AQISource {
+  INTERNAL
+  WAQI
+  OPENAQI
+}
+
+model AQIReading {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Location
+  lat      Float
+  lng      Float
+  location String
+  city     String
+  state    String
+  country  String @default("India")
+
+  // Pollution Data
+  aqi  Int
+  pm25 Float?
+  pm10 Float?
+  no2  Float?
+  so2  Float?
+  o3   Float?
+  co   Float?
+
+  // Weather Data
+  temperature Float? // °C
+  humidity    Float? // %
+
+  // MetaData
+  source     AQISource
+  stationId  String?
+  measuredAt DateTime
+
+  // Creation Date
+  createdAt DateTime @default(now())
+
+  @@index([lat, lng])
+  @@index([measuredAt])
+  @@index([source])
+}
+
+model HourlyAggregateReading {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Location
+  lat     Float
+  lng     Float
+  city    String
+  state   String
+  country String @default("India")
+
+  // Time window
+  hourStart DateTime
+  hourEnd   DateTime
+
+  // AQI aggregates
+  avgAqi Float
+  maxAqi Int
+  minAqi Int
+
+  avgPm25 Float?
+  avgPm10 Float?
+
+  // Weather aggregates
+  avgTemperature Float?
+  avgHumidity    Float?
+
+  source AQISource
+
+  createdAt DateTime @default(now())
+
+  @@unique([lat, lng, source, hourStart])
+  @@index([hourStart])
+  @@index([city, hourStart])
+  @@index([lat, lng])
+}
+
+model DailyAggregateReading {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Location
+  lat     Float
+  lng     Float
+  city    String
+  state   String
+  country String @default("India")
+
+  // Date bucket (YYYY-MM-DD)
+  date DateTime
+
+  // AQI aggregates
+  avgAqi Float
+  maxAqi Int
+  minAqi Int
+
+  avgPm25 Float?
+  avgPm10 Float?
+
+  // Weather aggregates
+  avgTemperature Float?
+  avgHumidity    Float?
+
+  source AQISource
+
+  createdAt DateTime @default(now())
+
+  @@unique([lat, lng, source, date])
+  @@index([date])
+  @@index([city, date])
+  @@index([lat, lng])
+}

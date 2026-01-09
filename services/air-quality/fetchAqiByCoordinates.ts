@@ -20,6 +20,9 @@ export type WaqiResponse = {
             name: string;
             geo: [number, number];
         };
+        time: {
+            iso: string
+        }
     };
 };
 
