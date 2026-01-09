@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Footer } from "@/components/aqi-ui/footer";
 import "./globals.css";
 import { NavbarMain } from "./(ui)/(root)/components/Navbar";
@@ -75,6 +76,7 @@ export default function RootLayout({
 
         {children}
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
