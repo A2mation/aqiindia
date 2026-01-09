@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { navItems } from "./navItems";
 import Link from "next/link";
+import { NavbarMiddleSection } from "./NavMiddleSection";
 
 export function NavbarMain() {
 
@@ -20,11 +21,13 @@ export function NavbarMain() {
 
   return (
     <div className="relative w-full">
-      <Navbar className="bg-secondary m-0 py-4">
+      <Navbar className="bg-white m-0 py-0">
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
-          <NavItems items={navItems} />
+
+          <NavbarMiddleSection />
+
           <div className="flex items-center gap-4">
             <NavbarButton variant="secondary">Login</NavbarButton>
             <NavbarButton variant="primary">Book a call</NavbarButton>
@@ -45,17 +48,10 @@ export function NavbarMain() {
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
           >
-            {navItems.map((item, idx) => (
-              <Link
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
-              >
-                <span className="block">{item.name}</span>
-              </Link>
-            ))}
+
+
             <div className="flex w-full flex-col gap-4">
+              <NavbarMiddleSection className="top-10" />
               <NavbarButton
                 onClick={() => setIsMobileMenuOpen(false)}
                 variant="primary"
