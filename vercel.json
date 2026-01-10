@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron/popular-cities-aqi?token=@cron_secret",
+      "path": "/api/cron/popular-cities-aqi",
       "schedule": "5 0 * * *"
     }
   ]

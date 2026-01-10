@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { prisma } from "@/lib/prisma";
 import { cities } from "@/data/popullar-cities";
 import { fetchAqiByCoordinates } from "@/services/air-quality/fetchAqiByCoordinates";
@@ -7,14 +8,9 @@ import { fetchAqiByCoordinates } from "@/services/air-quality/fetchAqiByCoordina
 export async function GET(req: Request) {
     try {
         const isVercelCron = req.headers.get("x-vercel-cron");
-        const { searchParams } = new URL(req.url);
 
         if (!isVercelCron) {
             return new Response("Forbidden", { status: 403 });
-        }
-
-        if (searchParams.get("token") !== process.env.CRON_SECRET) {
-            return new Response("Unauthorized", { status: 401 });
         }
 
         const results = [];
