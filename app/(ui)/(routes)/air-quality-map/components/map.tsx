@@ -4,11 +4,12 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Popup, useMapEvents } from "react-leaflet";
 
 import { getAQIBgColor } from "@/helpers/aqi-color-pallet";
 import { AirQualityCard } from "./air-quality-card";
-import { Popup } from "react-leaflet";
 import { AQIMarker } from "../page";
+import { http } from "@/lib/http";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((m) => m.MapContainer),
@@ -36,11 +37,11 @@ const aqiIcon = (value: number) =>
     html: `
       <div class="relative flex items-center justify-center">
         <span class="absolute inline-flex h-10 w-10 rounded-full ${getAQIBgColor(
-          value
-        )} opacity-60 animate-ping"></span>
+      value
+    )} opacity-60 animate-ping"></span>
         <span class="relative inline-flex items-center justify-center px-2 py-2 rounded-full ${getAQIBgColor(
-          value
-        )} text-white text-sm font-bold shadow-md">
+      value
+    )} text-white text-sm font-bold shadow-md">
           ${value}
         </span>
       </div>
@@ -54,15 +55,36 @@ export default function Map({
   loading,
   lat,
   lng,
+  setMarkers
 }: {
   markers: AQIMarker[];
   loading: boolean;
   lat: number | null;
   lng: number | null;
+  setMarkers: React.Dispatch<React.SetStateAction<AQIMarker[]>>;
 }) {
   const [mounted, setMounted] = useState(false);
   const [selectedStation, setSelectedStation] =
     useState<AQIMarker | null>(null);
+
+
+  const handleBoundsChange = async (bounds: {
+    north: number;
+    south: number;
+    east: number;
+    west: number;
+  }) => {
+    try {
+      const res = await http.get("/api/maps/aqi", {
+        params: bounds,
+      });
+
+      setMarkers(res.data);
+    } catch (err) {
+      console.error("Failed to fetch map AQI data", err);
+    }
+  };
+
 
   useEffect(() => {
     setMounted(true);
@@ -78,6 +100,7 @@ export default function Map({
         scrollWheelZoom={false}
         className="h-full w-full z-0"
       >
+        <MapEvents onBoundsChange={handleBoundsChange} />
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -107,4 +130,24 @@ export default function Map({
       </div>
     </div>
   );
+}
+
+
+
+
+function MapEvents({ onBoundsChange }: { onBoundsChange: (b: any) => void }) {
+  useMapEvents({
+    moveend: (e) => {
+      const bounds = e.target.getBounds();
+
+      onBoundsChange({
+        north: bounds.getNorth(),
+        south: bounds.getSouth(),
+        east: bounds.getEast(),
+        west: bounds.getWest(),
+      });
+    },
+  });
+
+  return null;
 }

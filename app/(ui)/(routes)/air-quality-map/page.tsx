@@ -86,6 +86,7 @@ const AirQualityPage = () => {
                 loading={loading}
                 lat={lat}
                 lng={lng}
+                setMarkers = {setMarkers}
             />
 
         </>
