@@ -34,7 +34,7 @@ export function NavbarMiddleSection({ className }: { className?: string }) {
             />
             <ProductItem
               title="Hospitals"
-              href="#hospitals"
+              href="/air-quality-monitoring-hospital-sites"
               src="https://elements-resized.envatousercontent.com/elements-video-cover-images/bbd0ce1a-28f3-4c0d-bd14-104264c92b10/video_preview/video_preview_0000.jpg?w=1200&h=630&cf_fit=crop&q=85&format=jpeg&s=5e568852b985ae253c51752c8d3e2c772bf55c5bf96a1b04d930d99cceb5bb9f"
               description="Offer real-time pollution data, allowing hospitals to anticipate high pollution periods."
             />

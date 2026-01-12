@@ -246,3 +246,18 @@ body {
 
 
 
+/* Updated animation for truly seamless infinite scroll */
+@keyframes scroll-seamless {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Move exactly the width of one set (5 images * 600px + 4 gaps * 24px = 3096px) */
+    transform: translateX(calc(-3096px));
+  }
+}
+
+/* Slowed down ticker from 25s to 35s */
+.animate-scroll-seamless {
+  animation: scroll-seamless 35s linear infinite;
+}
