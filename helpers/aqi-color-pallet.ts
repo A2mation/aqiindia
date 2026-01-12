@@ -51,7 +51,7 @@ export const aqiColorPallet: AQIPallet[] = [
         range: [151, 200]
     },
     {
-        label: "Very Unhealthy",
+        label: "Severe",
         color: "#4C002A",
         borderClass: "border-red-500",
         backgroundColor: "bg-purple-500",

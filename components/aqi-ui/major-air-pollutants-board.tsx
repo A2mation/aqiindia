@@ -126,7 +126,7 @@ export default function AirQualityDashboard() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-start justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-semibold text-foreground mb-1">
+            <h1 className="text-3xl font-bold text-foreground mb-1">
               Major Air Pollutants
             </h1>
             <p className="text-lg text-blue-600 font-medium">Kolkata</p>
@@ -167,7 +167,7 @@ export default function AirQualityDashboard() {
                 <div className="flex items-center gap-4">
                   <div className="flex-shrink-0">{pollutant.icon}</div>
                   <div>
-                    <div className="text-sm font-medium text-foreground mb-1">
+                    <div className="text-sm md:text-xl font-medium text-foreground mb-1">
                       {pollutant.name}
                     </div>
                     <div className="text-sm text-muted-foreground">

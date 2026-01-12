@@ -21,6 +21,9 @@ import { useLocationStore } from "@/store/location.store"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AQIScale } from "./aqi-scale"
 import { cn } from "@/lib/utils"
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import { SparklesCore } from "../ui/sparkles"
+import { BackgroundGradient } from "../ui/background-gradient"
 
 const AQIMap = dynamic(() => import("./aqi-map"), { ssr: false })
 
@@ -50,6 +53,15 @@ export function AQIDashboard() {
 
   })
 
+  const AirQualityImages: Record<string, string> = {
+    Good: "/assets/aqi-moods/Good.png",
+    Moderate: "/assets/aqi-moods/Moderate.png",
+    Poor: "/assets/aqi-moods/Poor.png",
+    Unhealthy: "/assets/aqi-moods/Unhealthy.png",
+    Severe: "/assets/aqi-moods/Severe.png",
+    Hazardous: "/assets/aqi-moods/Hazard.png",
+  };
+
 
   useEffect(() => {
     detectIpLocation()
@@ -61,6 +73,7 @@ export function AQIDashboard() {
       setTheme(getAQITheme(aqi))
     }
   }, [aqi])
+  const moodImage = AirQualityImages[theme.label]
 
   if (loading && !lastUpdated) {
     return (
@@ -88,13 +101,14 @@ export function AQIDashboard() {
       {/* Dashboard */}
       <div className="max-w-7xl min-w-[85vw] mx-auto px-4 -mt-32 relative z-10 pb-12">
         <Card className={`overflow-hidden shadow-2xl bg-gradient-to-br ${theme.bg}`}>
+
           <div className="p-6 sm:p-8 lg:p-10 backdrop-blur-sm">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-8">
-              <div>
-                <h1 className="text-3xl font-bold">Real-time AQI</h1>
+              <div className="flex gap-y-2 flex-col">
+                <h1 className="text-3xl md:text-5xl font-semibold">Real-time Air Quality Index (AQI)</h1>
 
-                <div className={`font-semibold ${theme.text}`}>
+                <div className={`font-semibold text-sm md:text-2xl underline  ${theme.text}`}>
                   {city || state || country ? (
                     `${city ?? ""}${city && state ? ", " : ""}${state ?? ""}${(city || state) && country ? ", " : ""}${country ?? ""}`
                   ) : (
@@ -104,20 +118,20 @@ export function AQIDashboard() {
                   )}
                 </div>
 
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm md:text-lg text-muted-foreground">
                   {lastUpdated ? `Last updated: ${lastUpdated}` : ""}
                 </div>
-                <div className="flex items-center justify-start mt-4">
-                  <span className="text-sm text-muted-foreground pr-2">
-                    Powered by
+                <div className="flex items-center justify-start">
+                  <span className="text-sm pr-2">
+                    Powered by A2mation
                   </span>
                   <div>
-                    <Image
+                    {/* <Image
                       src="/assets/a2mation-logo.png"
                       width={90}
                       height={5}
                       alt="Picture of the author"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -140,7 +154,7 @@ export function AQIDashboard() {
             {/* Main Grid */}
             <div className="grid lg:grid-cols-3 gap-8">
               {/* AQI Section */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-1 space-y-6">
                 <div className="flex items-start gap-8">
                   <div>
                     <div className={cn(
@@ -151,7 +165,7 @@ export function AQIDashboard() {
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
                         <span className="relative inline-flex size-3 rounded-full bg-red-600"></span>
                       </span>
-                      <span className="text-sm">Live AQI</span>
+                      <span className="text-sm md:text-xl">Live AQI</span>
                     </div>
 
                     <p
@@ -163,10 +177,10 @@ export function AQIDashboard() {
                   </div>
 
                   <div className="px-8 py-3 rounded-2xl flex flex-col items-center">
-                    <p className="text-sm opacity-70">Air Quality</p>
+                    <p className="text-sm md:text-xl opacity-70">Air Quality</p>
                     <p
                       style={{ color: theme.color }}
-                      className="text-lg md:text-3xl font-bold"
+                      className="text-lg md:text-4xl font-bold"
                     >
                       {theme.label}
                     </p>
@@ -176,15 +190,15 @@ export function AQIDashboard() {
                 {/* PM Cards */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className={`${theme.card} rounded-xl p-5`}>
-                    <p className="text-sm">PM10</p>
-                    <p className="text-2xl font-bold">
+                    <p className="text-sm md:text-2xl">PM10</p>
+                    <p className="text-2xl md:text-4xl font-bold">
                       {typeof pm10 === "number" ? `${pm10} µg/m³` : "--"}
                     </p>
                   </div>
 
                   <div className={`${theme.card} rounded-xl p-5`}>
-                    <p className="text-sm">PM2.5</p>
-                    <p className="text-2xl font-bold">
+                    <p className="text-sm md:text-3xl">PM2.5</p>
+                    <p className="text-2xl md:text-4xl font-bold">
                       {typeof pm25 === "number" ? `${pm25} µg/m³` : "--"}
                     </p>
                   </div>
@@ -193,58 +207,102 @@ export function AQIDashboard() {
                 {typeof aqi === "number" && <AQIScale currentValue={aqi} />}
               </div>
 
-              {/* Weather */}
-              <div className={`${theme.card} rounded-2xl p-6 space-y-6`}>
-                <div className="flex items-center gap-4">
-                  <Cloud className="h-10 w-10" />
-                  <div>
-                    <p className="text-4xl font-bold">
-                      {typeof temp === "number" ? `${temp}°C` : "--"}
-                    </p>
-                    <p className="text-sm opacity-70">Weather</p>
-                  </div>
+              {/* Image */}
+              <div className="lg:col-span-1 flex items-center justify-center">
+                <div className="relative w-full h-[420px] rounded-3xl overflow-hidden">
+
+                  {/* Particle background (fills whole card) */}
+                  <SparklesCore
+                    background="transparent"
+                    className="absolute inset-0 z-0"
+                    minSize={0.6}
+                    maxSize={2.5}
+                    particleDensity={aqi ? aqi*10 : 100}
+                    particleColor="#000000"
+                  />
+
+
+
+                  {/* Centered AQI character */}
+                  {moodImage && (
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                      <Image
+                        src={moodImage}
+                        width={160}
+                        height={160}
+                        alt="Air quality mood"
+                        className="object-contain drop-shadow-xl"
+                        priority
+                      />
+                    </div>
+                  )}
+
+                  
+
                 </div>
+              </div>
 
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="flex gap-2">
-                      <Droplets className="h-4 w-4" /> Humidity
-                    </span>
-                    <span>
-                      {typeof humidity === "number" ? `${Math.round(humidity)}%` : "--"}
-                    </span>
+
+
+
+              {/* Weather */}
+
+              <BackgroundGradient className="rounded-[22px] bg-inherit mx-auto p-4 sm:p-10 dark:bg-zinc-900">
+                <div className={`${theme.card} rounded-2xl w-full p-6 space-y-6`}>
+                  <div className="flex items-center gap-4">
+                    <Cloud className="h-12 w-12" />
+                    <div>
+                      <p className="text-4xl md:text-7xl font-bold">
+                        {typeof temp === "number" ? `${temp}°C` : "--"}
+                      </p>
+                      <p className="text-sm md:text-xl md:ml-2 opacity-70">Weather</p>
+                    </div>
                   </div>
 
-                  <div className="flex justify-between">
-                    <span className="flex gap-2">
-                      <Wind className="h-4 w-4" /> Wind
-                    </span>
-                    <span>
-                      {typeof wind === "number" ? `${parseFloat(wind.toString()).toFixed(2)} km/h` : "--"}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-center">
-                    <div className="flex items-center justify-start mt-4">
-                      <span className="text-sm text-muted-foreground pr-2">
-                        Powered by
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center text-lg md:text-2xl">
+                      <span className="flex gap-2 ">
+                        <Droplets className="h-8 w-8" /> Humidity
                       </span>
-                      <div>
-                        <Image
-                          src="/assets/a2mation-logo.png"
-                          width={90}
-                          height={5}
-                          alt="Picture of the author"
-                        />
+                      <span>
+                        {typeof humidity === "number" ? `${Math.round(humidity)}%` : "--"}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between text-lg md:text-2xl">
+                      <span className="flex gap-2">
+                        <Wind className="h-8 w-8 items-center" /> Wind
+                      </span>
+                      <span>
+                        {typeof wind === "number" ? `${parseFloat(wind.toString()).toFixed(2)} km/h` : "--"}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-center">
+                      <div className="flex items-center justify-start mt-4">
+                        <span className="text-sm text-muted-foreground pr-2">
+                          Powered by
+                        </span>
+                        <div>
+                          <Image
+                            src="/assets/a2mation-logo.png"
+                            width={90}
+                            height={5}
+                            alt="Picture of the author"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </BackgroundGradient>
+
+
             </div>
           </div>
+
         </Card>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 }

@@ -1,9 +1,11 @@
 "use client";
 
-import { JSX, useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
 import { CircleHelp } from "lucide-react";
+import { useEffect, useState } from "react";
+import Image from 'next/image'
+
 import { http } from "@/lib/http";
+import { Card } from "@/components/ui/card";
 
 type CityAQI = {
     location: string;
@@ -13,61 +15,15 @@ type CityAQI = {
 };
 
 
-const landmarks: Record<string, JSX.Element> = {
-    Ahmedabad: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M50 20 L70 40 L70 75 L30 75 L30 40 Z" />
-            <circle cx="50" cy="35" r="8" />
-            <path d="M42 35 L58 35 M50 27 L50 43" />
-            <rect x="40" y="60" width="20" height="15" />
-        </svg>
-    ),
-    Bengaluru: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M30 75 L30 40 L50 25 L70 40 L70 75" />
-            <circle cx="50" cy="35" r="10" />
-            <rect x="40" y="55" width="20" height="20" />
-            <path d="M25 75 L75 75" />
-        </svg>
-    ),
-    Chennai: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M50 20 L50 75" />
-            <path d="M35 30 L65 30 M30 40 L70 40 M25 50 L75 50 M30 60 L70 60 M35 70 L65 70" />
-            <circle cx="50" cy="25" r="5" />
-        </svg>
-    ),
-    Hyderabad: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M30 75 L30 50 L50 35 L70 50 L70 75" />
-            <circle cx="50" cy="30" r="8" />
-            <rect x="40" y="60" width="20" height="15" />
-        </svg>
-    ),
-    Kolkata: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <rect x="35" y="50" width="30" height="25" />
-            <path d="M30 50 L50 30 L70 50" />
-        </svg>
-    ),
-    Mumbai: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M30 75 L30 45 M70 75 L70 45" />
-            <path d="M30 45 L50 25 L70 45" />
-        </svg>
-    ),
-    Delhi: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M50 25 L50 75" />
-            <path d="M30 40 L70 40 M30 50 L70 50 M30 60 L70 60" />
-        </svg>
-    ),
-    Pune: (
-        <svg className="w-20 h-20 text-gray-300" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <circle cx="50" cy="45" r="20" />
-            <rect x="40" y="60" width="20" height="15" />
-        </svg>
-    ),
+const landmarks: Record<string, string> = {
+    Ahmedabad: "/assets/city-icons/ahmedabad.png",
+    Bengaluru: "/assets/city-icons/bangalore.png",
+    Chennai: "/assets/city-icons/chennai.png",
+    Hyderabad: "/assets/city-icons/hyderabad.png",
+    Kolkata: "/assets/city-icons/kolkata.png",
+    Mumbai: "/assets/city-icons/mumbai.png",
+    Delhi: "/assets/city-icons/delhi.png",
+    Pune: "/assets/city-icons/pune.png",
 };
 
 
@@ -111,7 +67,7 @@ export default function PopularCityCards() {
         );
     }
 
-    
+
     if (error) {
         return (
             <div className="p-8 text-red-600 font-medium">
@@ -120,7 +76,7 @@ export default function PopularCityCards() {
         );
     }
 
-    
+
     return (
         <main className="min-h-xl p-8">
             <div className="max-w-7xl mx-auto">
@@ -145,9 +101,16 @@ export default function PopularCityCards() {
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4">
+                            <div className="flex items-center justify-center gap-4">
                                 <div className="shrink-0">
-                                    {landmarks[city.location]}
+
+                                    <Image
+                                        src={landmarks[city.location]}
+                                        width={88}
+                                        height={85}
+                                        alt={"Location Images"}
+                                    />
+                                    
                                 </div>
 
                                 <div className="flex-1">
