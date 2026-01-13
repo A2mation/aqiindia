@@ -49,7 +49,7 @@ export function NavbarMiddleSection({ className }: { className?: string }) {
           <div className="text-sm grid grid-cols-1 md:grid-cols-2 gap-10 p-4">
             <ProductItem
               title="Construction"
-              href="#construction"
+              href="/air-quality-monitoring-construction-sites"
               src="https://motionarray.imgix.net/2519128-LHNmiJT7pZ-high_0005.jpg?w=660&q=60&fit=max&auto=format"
               description="Air Quality Monitoring for Construction Sites"
             />
