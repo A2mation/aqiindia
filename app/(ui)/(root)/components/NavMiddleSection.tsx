@@ -67,7 +67,7 @@ export function NavbarMiddleSection({ className }: { className?: string }) {
             />
             <ProductItem
               title="Institution"
-              href="#institution"
+              href="/air-quality-monitoring-industries"
               src="https://static.vecteezy.com/system/resources/thumbnails/022/530/575/small/school-building-exterior-vector-illustration-png.png"
               description="Sensor-Driven Solutions for Safer, Smarter Schools."
             />

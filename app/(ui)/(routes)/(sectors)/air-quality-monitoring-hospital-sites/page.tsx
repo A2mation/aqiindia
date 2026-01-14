@@ -13,8 +13,8 @@ const HospitalSitePage = () => {
             <Hero />
             <PortfolioShowcase />
             <ClientLogos />
-            <FAQSection />
             <StatsSection />
+            <FAQSection />
             <ApproachSection />
             <CTASection />
         </>
