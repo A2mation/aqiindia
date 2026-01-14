@@ -2,10 +2,12 @@
 
 import { Check, ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function HeroSection() {
     return (
@@ -19,7 +21,7 @@ export function HeroSection() {
                     {/* Section Title */}
                     <div className="section-title-gap-xl flex flex-col gap-2">
                         {/* Tagline */}
-                        <Badge className="bg-blue-400 text-white">Stay Compliant and Safe with</Badge>
+                        <Badge className="bg-blue-400 text-white md:text-lg">Stay Compliant and Safe with</Badge>
                         {/* Main Heading */}
                         <motion.h2
                             id="hero-heading"
@@ -27,7 +29,7 @@ export function HeroSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.8 }}
-                            className="heading-xl"
+                            className="heading-xl md:text-3xl"
                         >
                             Air Quality Monitoring for Construction Sites
                         </motion.h2>
@@ -87,7 +89,16 @@ export function HeroSection() {
                         transition={{ duration: 0.6, delay: 0.6 }}
                         className="flex flex-col gap-3 sm:flex-row"
                     >
-                        <Button>contact us</Button>
+
+                        <Link
+                            href={"/contact-us"}
+                            className={cn(buttonVariants({
+                                variant: "default"
+                            }))}
+                        >
+                            contact us
+                        </Link>
+
                         <Button variant="ghost">
                             Explore now
                             <ArrowRight />

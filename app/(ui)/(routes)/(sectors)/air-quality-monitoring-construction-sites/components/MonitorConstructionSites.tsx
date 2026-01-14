@@ -10,7 +10,7 @@ export function MonitorConstructionSites() {
             className="section-padding-y py-20"
             id="how-it-works"
         >
-            <div className="container-padding-x container mx-auto flex flex-col gap-10 md:gap-12">
+            <div className="container-padding-x container mx-auto px-2 flex flex-col gap-10 md:gap-12">
                 <div className="section-title-gap-lg mx-auto flex max-w-7xl flex-col items-center text-center">
                     <div className='flex justify-center flex-col gap-4'>
                         <motion.h2
@@ -27,7 +27,7 @@ export function MonitorConstructionSites() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className='text-center text-base md:text-xl text-zinc-400 max-w-5xl mx-auto'
+                            className='text-center text-lg md:text-xl text-zinc-400 max-w-5xl mx-auto'
                         >
                             Our sensors track key environmental, gaseous, and weather parameters to help you stay compliant, protect workers, and control pollution effectively.
                         </motion.span>

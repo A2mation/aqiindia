@@ -3,6 +3,7 @@ import AirQualityDashboard from "../../../components/aqi-ui/major-air-pollutants
 import { AQIGraph } from "@/components/aqi-ui/aqi-graph";
 import { AirPollutionTable } from "@/components/aqi-ui/location-based-air-pollution-table";
 import PopularCityCards from "@/components/aqi-ui/popular-city-aqi-table";
+import AirQualityIndexTable from "@/components/aqi-ui/air-quality-index-table";
 
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <AQIDashboard />
       <AirQualityDashboard />
       {/* <AQIGraph /> */}
+      <AirQualityIndexTable />
       <AirPollutionTable/>
       <PopularCityCards />
     </>

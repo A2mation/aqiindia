@@ -166,7 +166,7 @@ export default function AirQualityDashboard() {
                     <div className="text-sm md:text-xl font-medium text-foreground mb-1">
                       {pollutant.name}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-base font-semibold">
                       {pollutant.formula}
                     </div>
                   </div>
@@ -176,7 +176,7 @@ export default function AirQualityDashboard() {
                     <div className="text-2xl font-bold text-foreground">
                       {pollutant.value ?? "--"}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-base font-semibold">
                       {pollutant.unit}
                     </div>
                   </div>
