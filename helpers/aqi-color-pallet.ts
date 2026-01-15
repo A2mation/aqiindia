@@ -68,9 +68,15 @@ export const aqiColorPallet: AQIPallet[] = [
         bg: "from-rose-900 via-red-950 to-black",
         text: "text-rose-600",
         card: "bg-rose-950/70",
-        range: [301, 500]
+        range: [301, 999]
     },
 ];
+
+export const getAQIStatus = (aqi: number) : string => {
+    return aqiColorPallet.find(
+        (p) => aqi >= p.range[0] && aqi <= p.range[1]
+    )?.label ?? "Hazardous";
+}
 
 export const getAQIBorderClass = (aqi: number): string => {
     return aqiColorPallet.find(

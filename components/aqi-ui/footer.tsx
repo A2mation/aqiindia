@@ -9,29 +9,16 @@ export function Footer() {
                     {/* Logo and Tagline Section */}
                     <div className="lg:col-span-1 max-h-screen flex items-center ">
                         <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 p-8">
-                            <svg viewBox="0 0 150 80" className="mb-4 h-auto w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <text x="10" y="50" fontFamily="Arial, sans-serif" fontSize="48" fontWeight="bold">
-                                    <tspan fill="#3B82F6">A</tspan>
-                                    <tspan fill="#EC4899">Q</tspan>
-                                    <tspan fill="#10B981">I</tspan>
+                            <div className="flex items-center justify-center">
+                                <img
+                                    src={"/favicon.svg"}
 
-                                    <tspan fontSize="20" fill="#9CA3AF">
-                                        I
-                                    </tspan>
-                                    <tspan fontSize="20" fill="#9CA3AF">
-                                        N
-                                    </tspan>
-                                    <tspan fontSize="20" fill="#9CA3AF">
-                                        D
-                                    </tspan>
-                                    <tspan fontSize="20" fill="#9CA3AF">
-                                        I
-                                    </tspan>
-                                    <tspan fontSize="20" fill="#9CA3AF">
-                                        A
-                                    </tspan>
-                                </text>
-                            </svg>
+                                    alt={"LOGO"}
+                                    // width={10}
+                                    // height={10}
+                                    className="aspect-3/2"
+                                />
+                            </div>
                             <p className="text-center text-sm leading-relaxed text-blue-600">
                                 Real-time Air quality and Weather data around the world
                             </p>
@@ -40,7 +27,7 @@ export function Footer() {
 
                     {/* About AQI Column */}
                     <div>
-                        <h3 className="mb-4 text-sm font-medium text-gray-400">About AQI</h3>
+                        <h3 className="mb-4 text-sm font-medium text-gray-400">About AQI INDIA</h3>
                         <ul className="space-y-3">
                             <li>
                                 <Link href="/about-us" className="text-sm text-gray-900 hover:text-blue-600">
@@ -57,7 +44,7 @@ export function Footer() {
                                     AQI Monitor
                                 </Link>
                             </li>
-                           
+
                         </ul>
                     </div>
 
@@ -65,13 +52,13 @@ export function Footer() {
                     <div>
                         <h3 className="mb-4 text-sm font-medium text-gray-400">Air Quality</h3>
                         <ul className="space-y-3">
-                           
+
                             <li>
                                 <Link href="/air-quality-map" className="text-sm text-gray-900 hover:text-blue-600">
                                     AQI Map
                                 </Link>
                             </li>
-                            
+
                         </ul>
                     </div>
 

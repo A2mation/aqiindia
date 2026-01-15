@@ -13,6 +13,12 @@ import {
 import dynamic from "next/dynamic"
 import Image from 'next/image'
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { AQITheme, getAQITheme } from "@/helpers/aqi-color-pallet"
@@ -23,6 +29,7 @@ import { AQIScale } from "./aqi-scale"
 import { cn } from "@/lib/utils"
 import { SparklesCore } from "../ui/sparkles"
 import { BackgroundGradient } from "../ui/background-gradient"
+import { ShareDialog } from "@/components/Share-Button";
 
 const AQIMap = dynamic(() => import("./aqi-map"), { ssr: false })
 
@@ -41,6 +48,7 @@ export function AQIDashboard() {
     aqi,
     error,
   } = useLocationStore()
+  const [open, setOpen] = useState(false);
 
   const [theme, setTheme] = useState<AQITheme>({
     label: "Unknown",
@@ -135,19 +143,55 @@ export function AQIDashboard() {
                 </div>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex items-center gap-3">
+                {/* Map Button – Primary Action */}
                 <a href="/air-quality-map">
-                  <Button variant="outline" className="gap-2 hover:cursor-pointer" >
-                    <MapPin className="h-4 w-4" /> View in Maps
+                  <Button
+                    size="lg"
+                    className="gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 
+                 text-white shadow-md transition-all duration-300
+                 hover:scale-105 hover:shadow-lg active:scale-95"
+                  >
+                    <MapPin className="h-5 w-5" />
+                    View Map
                   </Button>
                 </a>
-                <Button variant="outline" size="icon">
-                  <Heart className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon">
-                  <Share2 className="h-4 w-4" />
-                </Button>
+
+                {/* Favorite Button */}
+                {/* <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-12 w-12 rounded-xl border-blue-300 
+               transition-all duration-300
+               hover:bg-pink-50 hover:text-pink-600
+               hover:scale-110 hover:shadow-md"
+                >
+                  <Heart className="h-5 w-5" />
+                </Button> */}
+
+                {/* Share Button */}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={() => setOpen(true)}
+                        variant="outline"
+                        size="icon"
+                        className="h-12 w-12 rounded-xl border-blue-300
+                         transition-all duration-300
+                         hover:bg-blue-50 hover:text-blue-600
+                         hover:scale-110 hover:shadow-md"
+                      >
+                        <Share2 className="h-5 w-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">Share</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <ShareDialog open={open} onOpenChange={setOpen} />
               </div>
+
             </div>
 
             {/* Main Grid */}

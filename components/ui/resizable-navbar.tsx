@@ -9,7 +9,7 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import Link from "next/link";
-
+import Image from "next/image"
 import React, { useRef, useState } from "react";
 
 
@@ -237,31 +237,16 @@ export const NavbarLogo = () => {
 
     <Link
       href={"/"}
+      className="h-full"
     >
-      <svg
-        viewBox="0 0 90 24"
-        className="h-6 w-auto"  // h-6 is perfect for navbars
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <text
-          x="0"
-          y="18"
-          fontFamily="Arial, sans-serif"
-          fontSize="16"
-          fontWeight="bold"
-        >
-          <tspan fill="#3B82F6">A</tspan>
-          <tspan fill="#EC4899">Q</tspan>
-          <tspan fill="#10B981">I</tspan>
-
-          <tspan fill="#3B82F6">I</tspan>
-          <tspan fill="#3B82F6">N</tspan>
-          <tspan fill="#3B82F6">D</tspan>
-          <tspan fill="#3B82F6">I</tspan>
-          <tspan fill="#3B82F6">A</tspan>
-        </text>
-      </svg>
+      <img
+        src={"/favicon.svg"}
+        
+        alt={"LOGO"}
+        // width={10}
+        // height={10}
+        className="h-15 w-15"
+      />
     </Link>
   );
 };

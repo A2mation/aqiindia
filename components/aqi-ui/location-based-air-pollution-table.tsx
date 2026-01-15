@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { getAQIColor } from "@/helpers/aqi-color-pallet";
+import { getAQIColor, getAQIStatus } from "@/helpers/aqi-color-pallet";
 import { http } from "@/lib/http";
 import { useLocationStore } from "@/store/location.store";
 import { Skeleton } from "../ui/skeleton";
@@ -23,9 +23,7 @@ type SortKey = keyof Location | null;
 type SortOrder = "asc" | "desc";
 
 
-function getAQIStatus(aqi: number): "Severe" | "Unhealthy" {
-    return aqi > 200 ? "Severe" : "Unhealthy";
-}
+
 
 
 export function AirPollutionTable() {
