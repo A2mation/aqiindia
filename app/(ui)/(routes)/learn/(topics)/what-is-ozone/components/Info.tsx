@@ -8,7 +8,7 @@ const Info = () => {
         <main className="min-h-screen bg-gradient-to-b from-blue-50 via-purple-50 to-white">
             {/* Hero Section */}
             <section className="px-4 py-8 sm:py-12 md:py-16 lg:py-20">
-                <div className="mx-auto max-w-4xl">
+                <div className="mx-auto max-w-6xl">
                     <div className="mb-8 rounded-xl bg-white p-6 sm:p-8 shadow-sm ring-1 ring-purple-100">
                         <motion.h1
                             id="hero-heading"
@@ -25,7 +25,7 @@ const Info = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="text-center text-sm text-gray-700 sm:text-base leading-relaxed"
+                            className="text-center text-lg text-gray-700 sm:text-2xl leading-relaxed"
                         >
                             Ozone in the indoor environment can be exceedingly dangerous. Especially if it is confined indoors and
                             fresh air from outside cannot enter via ventilation. It can have a detrimental effect on the occupants'
@@ -41,7 +41,7 @@ const Info = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.6, delay: 0.2}}
-                            className="mb-4 text-center text-xl font-bold text-purple-900 sm:text-2xl md:text-3xl"
+                            className="mb-4 text-center text-2xl font-bold text-purple-900 sm:text-3xl md:text-4xl lg:text-5xl"
                         >
                             Is ozone harmful to humans?
                         </motion.h2>
@@ -50,7 +50,7 @@ const Info = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="text-center text-sm text-gray-800 sm:text-base leading-relaxed"
+                            className="text-center text-lg text-gray-800 sm:text-2xl leading-relaxed"
                         >
                             When exposed to O3, it can induce a variety of diseases and discomforts. Ozone in high quantities can
                             irritate the skin and cause cellular damage. For example, O3 can cause cellular damage in the same way as
@@ -61,7 +61,6 @@ const Info = () => {
                 </div>
             </section>
 
-            {/* Health Effects Grid */}
             <section className="px-4 py-8 sm:py-12 md:py-16">
                 <div className="mx-auto max-w-6xl">
                     <h2 className="mb-8 text-center text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl text-balance">
@@ -83,10 +82,10 @@ const Info = () => {
                                 <div className="mb-4 text-4xl sm:text-5xl">{effect.icon}</div>
 
                                 {/* Title */}
-                                <h3 className="mb-3 text-lg font-semibold text-gray-900 sm:text-xl">{effect.title}</h3>
+                                <h3 className="mb-3 text-lg font-semibold text-gray-900 md:text-3xl">{effect.title}</h3>
 
                                 {/* Description */}
-                                <p className="text-sm leading-relaxed text-gray-700 sm:text-base">{effect.description}</p>
+                                <p className="leading-relaxed text-gray-700 text-xl ">{effect.description}</p>
                             </div>
                         ))}
                     </div>
@@ -96,8 +95,8 @@ const Info = () => {
             {/* Footer Info */}
             <section className="px-4 py-12 sm:py-16 md:py-20">
                 <div className="mx-auto max-w-4xl rounded-xl bg-blue-50 p-6 sm:p-8 md:p-10 ring-1 ring-blue-200">
-                    <h3 className="mb-4 text-lg font-semibold text-blue-900 sm:text-xl">Protect Your Indoor Air Quality</h3>
-                    <ul className="space-y-3 text-sm text-blue-800 sm:text-base leading-relaxed">
+                    <h3 className="mb-4 text-xl font-semibold text-blue-900 sm:text-2xl">Protect Your Indoor Air Quality</h3>
+                    <ul className="space-y-3 text-xl text-blue-800 sm:text-2xl leading-relaxed">
                         <li className="flex items-start gap-3">
                             <span className="mt-1 flex-shrink-0 text-blue-600">✓</span>
                             <span>Ensure proper ventilation in indoor spaces to reduce ozone concentration</span>

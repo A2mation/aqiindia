@@ -13,7 +13,7 @@ const Precautions = () => {
                     How to detect ozone (O3)?
                 </h1>
 
-                <span className="mb-12 text-center text-lg leading-relaxed sm:text-xl text-balance">
+                <span className="mb-12 text-center text-xl leading-relaxed sm:text-2xl text-balance">
                     How to know if one of these above-mentioned appliances is producing Ozone? Ozone has a distinct odor that
                     could describe as a fresh bleach-like smell. If you can smell it then theres too much O3 gas present in the
                     air to be breathing continuously. It can also be measured using advanced instruments. Such as, Prana Air

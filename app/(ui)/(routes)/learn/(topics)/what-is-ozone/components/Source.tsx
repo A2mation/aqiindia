@@ -10,7 +10,7 @@ const Source = () => {
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 text-balance">
                         Sources of Ozone (O₃) Indoors
                     </h1>
-                    <p className="text-base md:text-lg text-blue-100 max-w-2xl mx-auto text-balance">
+                    <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto text-balance">
                         Ozone can come from outdoor smog via ventilation, but it also has indoor sources. These include:
                     </p>
                 </div>
@@ -90,12 +90,12 @@ function SourceCard({ icon, title, description, number, colSpan = "" }: SourceCa
             </div>
 
             {/* Title with Number */}
-            <h3 className="text-xl md:text-2xl font-semibold text-white mb-3">
+            <h3 className="text-2xl md:text-3xl font-semibold text-white mb-3">
                 {number}. {title}
             </h3>
 
             {/* Description */}
-            <p className="text-base md:text-lg text-blue-50 leading-relaxed line-clamp-6">{description}</p>
+            <p className="text-xl md:text-2xl text-blue-50 leading-relaxed line-clamp-6">{description}</p>
         </motion.div>
     )
 }
