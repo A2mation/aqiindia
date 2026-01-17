@@ -49,6 +49,8 @@ model AQIReading {
   @@index([lat, lng])
   @@index([measuredAt])
   @@index([source])
+  @@index([city])
+  @@index([state])
   @@index([location, measuredAt])
 }
 

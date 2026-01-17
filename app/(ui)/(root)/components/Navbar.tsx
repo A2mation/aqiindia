@@ -24,9 +24,11 @@ export function NavbarMain() {
       <Navbar className="bg-sky-50 m-0 py-0">
         {/* Desktop Navigation */}
         <NavBody>
-          <NavbarLogo />
+          <div className="flex flex-row items-center gap-4">
+            <NavbarLogo />
+            <Searchbar />
+          </div>
 
-          <Searchbar />
           <div className="flex justify-center md:justify-start" >
             <NavbarMiddleSection className="bg-inherit" />
           </div>
