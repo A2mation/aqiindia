@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils"
 import { SparklesCore } from "../ui/sparkles"
 import { BackgroundGradient } from "../ui/background-gradient"
 import { ShareDialog } from "@/components/Share-Button";
+import { ViewMapsButton } from "../ViewMapsButton"
 
 const AQIMap = dynamic(() => import("./aqi-map"), { ssr: false })
 
@@ -146,15 +147,7 @@ export function AQIDashboard() {
               <div className="flex items-center gap-3">
                 {/* Map Button – Primary Action */}
                 <a href="/air-quality-map">
-                  <Button
-                    size="lg"
-                    className="gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 
-                 text-white shadow-md transition-all duration-300
-                 hover:scale-105 hover:shadow-lg active:scale-95"
-                  >
-                    <MapPin className="h-5 w-5" />
-                    View Map
-                  </Button>
+                  <ViewMapsButton />
                 </a>
 
                 {/* Favorite Button */}
