@@ -22,10 +22,10 @@ export const aqiColorPallet: AQIPallet[] = [
     },
     {
         label: "Moderate",
-        color: "#FFFF00",
+        color: "#ACB015",
         borderClass: "border-yellow-400",
         backgroundColor: "bg-yellow-500",
-        bg: "from-yellow-100 via-yellow-50 to-yellow-100 dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-950",
+        bg: "from-white via-yellow-50 to-yellow-100 dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-950",
         text: "text-yellow-700 dark:text-yellow-400",
         card: "bg-yellow-50/80 dark:bg-yellow-950/40",
         range: [51, 100]
@@ -65,8 +65,8 @@ export const aqiColorPallet: AQIPallet[] = [
         color: "#7E0023",
         borderClass: "border-red-500",
         backgroundColor: "bg-purple-800",
-        bg: "from-rose-900 via-red-950 to-black",
-        text: "text-rose-600",
+        bg: "from-white to-rose-900",
+        text: "text-rose-900",
         card: "bg-rose-950/70",
         range: [301, 999]
     },

@@ -107,9 +107,9 @@ export function UniversalAQIDashboard({ data }: UniversalAQIDashboardProps) {
                 <Card className={`overflow-hidden border `}>
                     <DynamicPagination
                         items={[
-                            averages.country,
-                            averages.state,
-                            averages.city,
+                            slugify(averages.country),
+                            averages.state && slugify(averages.state),
+                            averages.city && slugify(averages.city),
                         ].filter((item): item is string => !!item)}
                     />
 
@@ -178,7 +178,7 @@ export function UniversalAQIDashboard({ data }: UniversalAQIDashboardProps) {
                         </div>
 
                         {/* Main Grid */}
-                        <div className={`grid lg:grid-cols-3 border p-4 rounded-2xl gap-8 bg-gradient-to-br ${theme.bg}`}>
+                        <div className={`grid lg:grid-cols-3 border p-4 rounded-2xl gap-8 bg-gradient-to-b ${theme.bg}`}>
                             {/* AQI Section */}
                             <div className="lg:col-span-1 space-y-6">
                                 <div className="flex items-start gap-8">
@@ -242,7 +242,7 @@ export function UniversalAQIDashboard({ data }: UniversalAQIDashboardProps) {
                                         background="transparent"
                                         minSize={0.6}
                                         maxSize={1.4}
-                                        particleDensity={900}
+                                        particleDensity={6 * (averages.aqi ? averages.aqi : 1)}
                                         particleColor="#000000"
                                     />
 
@@ -319,3 +319,10 @@ export function UniversalAQIDashboard({ data }: UniversalAQIDashboardProps) {
 }
 
 
+
+function slugify(value: string) {
+    return value
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+}

@@ -16,7 +16,6 @@ interface Props {
 }
 
 
-
 const DynamicPagination = ({ items }: Props) => {
     const pathname = usePathname()
 

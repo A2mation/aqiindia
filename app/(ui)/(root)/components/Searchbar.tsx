@@ -7,11 +7,11 @@ import { getAQIBgColor, getAQITextColor } from "@/helpers/aqi-color-pallet"
 import { cn } from "@/lib/utils"
 
 type Result = {
-  id: string
-  name: string
-  country: string
-  state?: string
-  aqi: number
+    id: string
+    name: string
+    country: string
+    state?: string
+    aqi: number
 }
 
 
@@ -131,16 +131,21 @@ const Skeleton = () => {
 }
 
 
+function slugify(value: string | undefined): string {
+    if (value == undefined) return ''
+    return value.toLowerCase().trim().replace(/\s+/g, "-")
+}
+
 const Results = ({
     data,
 }: {
     data: { states: Result[]; cities: Result[] }
 }) => {
-    
+
     return (
         <div className="max-h-80 overflow-y-auto">
 
-            {(["states","cities"] as const).map(
+            {(["states", "cities"] as const).map(
                 (section) =>
                     data[section].length > 0 && (
                         <div key={section}>
@@ -149,10 +154,16 @@ const Results = ({
                             </p>
 
                             {data[section].map((item) => (
-                                <div
+                                <a
                                     key={item.id}
+                                    href={
+                                        section == 'states' ? `/dashboard/${slugify(item.country)}/${slugify(item.state)}` :
+                                            section == 'cities' ? `/dashboard/${slugify(item.country)}/${slugify(item.state)}/${slugify(item.name)}` : ""
+                                    }
                                     className="flex items-center justify-between px-4 py-3 hover:bg-slate-50 cursor-pointer"
                                 >
+
+
                                     <div>
                                         <p className="text-lg font-medium text-slate-800">
                                             {item.name}
@@ -172,7 +183,8 @@ const Results = ({
                                     >
                                         {item.aqi}
                                     </span>
-                                </div>
+
+                                </a>
                             ))}
                         </div>
                     )
