@@ -1,0 +1,87 @@
+import { NextResponse } from "next/server";
+
+import { prisma } from "@/lib/prisma";
+import { getTodayWindow, adjustTemperature } from "@/helpers/time";
+
+export async function GET(req: Request) {
+    try {
+
+        const {
+            searchParams
+        } = new URL(req.url)
+
+        const country = searchParams.get("country")?.trim()
+        const state = searchParams.get("state")?.trim().replace("-", " ");
+        const city = searchParams.get("city")?.trim().replace("-", " ");
+
+        if (!country || !state || !city) {
+            return new NextResponse("Country not found", {
+                status: 404
+            })
+        }
+
+        const { startOfToday, startOfTomorrow } = getTodayWindow();
+
+        const cities = await prisma.aQIReading.aggregate({
+            where: {
+                city: {
+                    equals: city,
+                    mode: "insensitive"
+                },
+                state: {
+                    equals: state,
+                    mode: "insensitive",
+                },
+                country: {
+                    equals: country,
+                    mode: "insensitive",
+                },
+                measuredAt: {
+                    gte: startOfToday,
+                    lt: startOfTomorrow,
+                },
+            },
+            _avg: {
+                aqi: true,
+                pm10: true,
+                pm25: true,
+                temperature: true,
+                humidity: true,
+            },
+            _count: {
+                _all: true,
+            },
+        })
+
+
+        if (cities._count._all === 0) {
+            return new NextResponse("No data for today", {
+                status: 404
+            })
+        }
+        const avgTemp = cities._avg.temperature
+
+        const adjustedTemperature = adjustTemperature(avgTemp)
+
+
+        return NextResponse.json({
+            averages: {
+                aqi: cities._avg.aqi,
+                pm10: cities._avg.pm10,
+                pm25: cities._avg.pm25,
+                temperature: adjustedTemperature,
+                humidity: cities._avg.humidity,
+                city: city,
+                state: state,
+                country: country
+            },
+        }, {
+            status: 200
+        })
+
+    } catch (error) {
+        return new NextResponse("INTERNAL SERVER ERROR", {
+            status: 500
+        })
+    }
+}

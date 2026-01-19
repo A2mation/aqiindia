@@ -6,6 +6,7 @@ import { use, useEffect, useState } from 'react'
 import { UniversalAQIDashboard } from '@/components/aqi-ui/universal-aqi-dashboard'
 import { http } from '@/lib/http'
 
+
 interface AQIData {
     averages: {
         aqi: number | null
@@ -13,17 +14,20 @@ interface AQIData {
         pm25: number | null
         temperature: number | null
         humidity: number | null
+        city: string
         state: string
         country: string
     }
 }
 
-const StatePage = ({
+
+
+const CityPage = ({
     params,
 }: {
-    params: Promise<{ country: string, state: string }>
+    params: Promise<{ country: string, state: string, city: string }>
 }) => {
-    const { state, country } = use(params)
+    const { city, state, country } = use(params)
     const [data, setData] = useState<AQIData | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -37,8 +41,8 @@ const StatePage = ({
             setError(null)
 
             try {
-                const res = await http.get<AQIData>('/api/aqi/state', {
-                    params: { country, state },
+                const res = await http.get<AQIData>('/api/aqi/city', {
+                    params: { country, state, city },
                 })
 
                 if (isMounted) {
@@ -102,7 +106,6 @@ const StatePage = ({
         return null
     }
 
-    console.log(data)
 
     return (
         <section className="relative w-full">
@@ -111,4 +114,4 @@ const StatePage = ({
     )
 }
 
-export default StatePage
+export default CityPage
