@@ -37,7 +37,7 @@ const DynamicPagination = ({ items }: Props) => {
                         href="/dashboard"
                         size="lg"
                         className={clsx(
-                            "p-4 md:text-xl flex items-center gap-2",
+                            "p-1 md:p-4 text-sm md:text-xl flex items-center gap-2",
                             isDashboardActive && "text-blue-500 font-semibold",
                             "hover:bg-inherit hover:text-blue-400"
                         )}
@@ -64,7 +64,7 @@ const DynamicPagination = ({ items }: Props) => {
                                 href={currentPath}
                                 size="lg"
                                 className={clsx(
-                                    "p-4 md:text-xl",
+                                    "p-1 md:p-4 text-sm md:text-xl",
                                     isActive && "text-blue-600 font-semibold",
                                     "hover:bg-inherit hover:text-blue-400"
                                 )}

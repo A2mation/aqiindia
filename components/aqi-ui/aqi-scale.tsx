@@ -22,7 +22,7 @@ export function AQIScale({ currentValue }: AQIScaleProps) {
   }
 
   return (
-    <div className="space-y-3 w-75 md:w-full">
+    <div className="space-y-3 w-70 md:w-full">
       {/* Scale Bar */}
       <div className="relative h-3 rounded-full overflow-hidden bg-white/80 dark:bg-black/20 shadow-inner ">
         <div className="absolute inset-0 flex">
