@@ -9,10 +9,13 @@ import {
 import { ChevronRight, LayoutDashboard } from "lucide-react"
 import { usePathname } from "next/navigation"
 import clsx from "clsx"
+import { formatPlaceName } from "@/helpers/format-place-name"
 
 interface Props {
     items: string[]
 }
+
+
 
 const DynamicPagination = ({ items }: Props) => {
     const pathname = usePathname()
@@ -23,10 +26,13 @@ const DynamicPagination = ({ items }: Props) => {
 
     const isDashboardActive = pathname.startsWith("/dashboard")
 
+    let currentPath = "/dashboard"
+
     return (
         <Pagination>
             <PaginationContent className="flex items-center justify-center">
 
+                {/* Dashboard */}
                 <PaginationItem>
                     <PaginationLink
                         href="/dashboard"
@@ -42,21 +48,21 @@ const DynamicPagination = ({ items }: Props) => {
                     </PaginationLink>
                 </PaginationItem>
 
-              
+                {/* Separator */}
                 <PaginationItem className="pointer-events-none">
                     <ChevronRight size={16} />
                 </PaginationItem>
 
-            
+                {/* Dynamic breadcrumbs */}
                 {items.map((item, index) => {
-                    const href = `/dashboard/${item}`
-                    const isActive = pathname.startsWith(href)
+                    currentPath += `/${item}`.replace(" ", "-")
+                    const isActive = pathname.startsWith(currentPath)
 
                     return (
-                        <PaginationItem key={item} className="flex items-center">
+                        <PaginationItem key={currentPath} className="flex items-center">
 
                             <PaginationLink
-                                href={href}
+                                href={currentPath}
                                 size="lg"
                                 className={clsx(
                                     "p-4 md:text-xl",
@@ -64,10 +70,9 @@ const DynamicPagination = ({ items }: Props) => {
                                     "hover:bg-inherit hover:text-blue-400"
                                 )}
                             >
-                                {item}
+                                {formatPlaceName(item)}
                             </PaginationLink>
 
-                            
                             {index < items.length - 1 && (
                                 <ChevronRight size={16} />
                             )}

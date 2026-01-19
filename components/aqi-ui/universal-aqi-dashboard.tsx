@@ -27,6 +27,7 @@ import { ViewMapsButton } from "../ViewMapsButton"
 import DynamicPagination from "../Pagination-Dynamic"
 import { Badge } from "../ui/badge";
 import { formatTime } from "@/helpers/time";
+import { formatPlaceName } from "@/helpers/format-place-name";
 
 
 interface AQIAverages {
@@ -35,6 +36,7 @@ interface AQIAverages {
     pm25: number | null
     temperature: number | null
     humidity: number | null
+    state?: string
     country: string
 }
 
@@ -103,7 +105,9 @@ export function UniversalAQIDashboard({ data }: UniversalAQIDashboardProps) {
             <div className="max-w-[100rem] h-full mx-auto px-4 -mt-32 relative z-10 pb-12">
                 <Card className={`overflow-hidden border `}>
 
-                    <DynamicPagination items={[averages.country]} />
+                    <DynamicPagination items={
+                        averages.state ? [averages.country, averages.state] : [averages.country]
+                    } />
 
 
                     <div className="p-6 sm:p-8 lg:p-10">
@@ -117,7 +121,9 @@ export function UniversalAQIDashboard({ data }: UniversalAQIDashboardProps) {
                         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-8">
                             <div className="flex gap-y-2 flex-col">
                                 <h1 className="text-3xl md:text-5xl py-4 font-semibold">
-                                    {averages.country} Air Quality Index (AQI)</h1>
+                                    {averages.state ? formatPlaceName(averages.state) : formatPlaceName(averages.country)}
+                                    {" "} Air Quality Index (AQI)
+                                </h1>
 
                                 <div className="text-sm md:text-lg text-muted-foreground">
                                     {lastUpdated && (

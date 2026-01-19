@@ -11,8 +11,9 @@ export async function GET(req: Request) {
         } = new URL(req.url)
 
         const country = searchParams.get("country")?.trim()
+        const state = searchParams.get("state")?.trim().replace("-", " ");
 
-        if (!country) {
+        if (!country || !state) {
             return new NextResponse("Country not found", {
                 status: 404
             })
@@ -20,16 +21,20 @@ export async function GET(req: Request) {
 
         const { startOfToday, startOfTomorrow } = getTodayWindow();
 
-        const countires = await prisma.aQIReading.aggregate({
+        const states = await prisma.aQIReading.aggregate({
             where: {
+                state: {
+                    equals: state,
+                    mode: "insensitive",
+                },
                 country: {
                     equals: country,
                     mode: "insensitive",
                 },
                 measuredAt: {
                     gte: startOfToday,
-                    lt: startOfTomorrow
-                }
+                    lt: startOfTomorrow,
+                },
             },
             _avg: {
                 aqi: true,
@@ -41,26 +46,27 @@ export async function GET(req: Request) {
             _count: {
                 _all: true,
             },
-
         })
-        
-        if (countires._count._all === 0) {
+
+
+        if (states._count._all === 0) {
             return new NextResponse("No data for today", {
                 status: 404
             })
         }
-        const avgTemp = countires._avg.temperature
+        const avgTemp = states._avg.temperature
 
         const adjustedTemperature = adjustTemperature(avgTemp)
 
 
         return NextResponse.json({
             averages: {
-                aqi: countires._avg.aqi,
-                pm10: countires._avg.pm10,
-                pm25: countires._avg.pm25,
+                aqi: states._avg.aqi,
+                pm10: states._avg.pm10,
+                pm25: states._avg.pm25,
                 temperature: adjustedTemperature,
-                humidity: countires._avg.humidity,
+                humidity: states._avg.humidity,
+                state: state,
                 country: country
             },
         }, {
