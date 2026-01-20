@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { cities } from "@/data/popullar-cities";
 
-const BASE_URL = "https://a2aqi.com";
+const BASE_URL = "https://www.a2aqi.com";
 
 function slugify(value: string) {
     return value

@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
                 allow: "/",
             },
         ],
-        sitemap: "https://a2aqi.com/sitemap.xml",
+        sitemap: "https://www.a2aqi.com/sitemap.xml",
     };
 }
