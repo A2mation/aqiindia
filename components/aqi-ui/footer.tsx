@@ -12,7 +12,7 @@ export function Footer() {
                         <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 p-8">
                             <div className="flex items-center justify-center">
                                 <img
-                                    src={"/favicon.svg"}
+                                    src={"/favicon.png"}
 
                                     alt={"LOGO"}
                                     // width={10}
