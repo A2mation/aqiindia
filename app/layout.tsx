@@ -16,13 +16,15 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "AQIIndia – Live Air Quality Index (AQI) & Pollution Data",
-    template: "%s | AQIIndia",
+    default: "A2aqi – Live Air Quality Index (AQI) & Pollution Data",
+    template: "%s | a2aqi",
   },
   description:
-    "AQIIndia provides real-time Air Quality Index (AQI), PM2.5, PM10, and pollution data across Indian cities. Track air quality near you with accurate, live updates.",
+    "A2aqi provides real-time Air Quality Index (AQI), PM2.5, PM10, and pollution data across Indian cities. Track air quality near you with accurate, live updates.",
   keywords: [
     "AQI India",
+    "a2 aqi",
+    "A2aqi",
     "Air Quality Index India",
     "Live AQI",
     "Air Pollution India",
@@ -32,21 +34,21 @@ export const metadata: Metadata = {
     "India Air Quality",
     "Pollution levels India",
   ],
-  metadataBase: new URL("https://aqiindia.com"), // change when domain is final
+  metadataBase: new URL("https://a2aqi.com"),
   openGraph: {
-    title: "AQIIndia – Live Air Quality Index & Pollution Tracker",
+    title: "a2aqi – Live Air Quality Index & Pollution Tracker",
     description:
       "Check real-time AQI, PM2.5, PM10, and pollution levels across India. Stay informed about air quality in your city.",
-    url: "https://aqiindia.com",
-    siteName: "AQIIndia",
+    url: "https://a2aqi.com",
+    siteName: "a2aqi",
     locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AQIIndia – Live Air Quality Index",
+    title: "a2aqi – Live Air Quality Index",
     description:
-      "Real-time AQI and air pollution data for Indian cities. Track PM2.5, PM10, and more with AQIIndia.",
+      "Real-time AQI and air pollution data for Indian cities. Track PM2.5, PM10, and more with a2aqi.",
   },
   robots: {
     index: true,
@@ -69,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png"/>
       </head>
       <body className="font-poppins">
         <NavbarMain />

@@ -237,15 +237,15 @@ export const NavbarLogo = () => {
 
     <Link
       href={"/"}
-      className="h-full"
+      className="h-full pr-2"
     >
       <img
-        src={"/favicon.svg"}
+        src={"/favicon.png"}
         
         alt={"LOGO"}
-        // width={10}
-        // height={10}
-        className="h-15 w-15"
+        width={100}
+        height={70}
+        
       />
     </Link>
   );
