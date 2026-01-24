@@ -61,21 +61,24 @@ const Searchbar = () => {
 
 
     return (
-        <div className="relative mr-4 w-full md:w-80">
+        <div className="relative w-full md:w-70">
             {/* Search Input */}
-            <div className="relative flex items-center">
-                <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <div className="relative flex items-center justify-center">
+                <Search className="absolute left-6 md:left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
 
                 <input
+                    id="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search"
+                    name="search"
                     className="
                         h-10
                         pl-10 pr-8
+                        w-[90%]
                         md:w-full
                         rounded-lg
-                        border border-sky-200
+                        border border-slate-200
                         bg-white
                         text-base
                         text-slate-800

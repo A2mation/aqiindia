@@ -50,7 +50,7 @@ export const MenuItem = ({
         transition={{ duration: 0.3 }}
         className={cn(
           "group flex flex-col gap-0.5 cursor-pointer text-lg md:text-xl font-bold text-black hover:opacity-[0.9] dark:text-white",
-          isScrolled ? "text-blue-700" : "text-blue-500"
+          isScrolled ? "text-blue-400" : "text-black"
         )}
       >
         {item}

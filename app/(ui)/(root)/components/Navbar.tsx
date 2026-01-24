@@ -20,8 +20,8 @@ export function NavbarMain() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative w-full m-0">
-      <Navbar className="bg-sky-50 m-0 py-0">
+    <div className="relative z-50 w-full m-0">
+      <Navbar className="bg-white m-0 py-0">
         {/* Desktop Navigation */}
         <NavBody>
           <div className="flex flex-row items-center gap-4">

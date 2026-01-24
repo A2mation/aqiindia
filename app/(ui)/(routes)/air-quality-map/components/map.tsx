@@ -115,7 +115,7 @@ export default function Map({
     <div className=" w-full h-full rounded-2xl overflow-hidden bg-white shadow">
       <MapContainer
         center={[lat, lng]}
-        zoom={13}
+        zoom={10}
         scrollWheelZoom={true}
         className="h-full w-full z-0"
       >

@@ -27,7 +27,7 @@ export function NavbarMiddleSection({ className }: { className?: string }) {
           href={"/learn"}
           className={cn(
             "group flex flex-col gap-0.5 cursor-pointer text-lg md:text-xl font-bold  dark:text-white",
-            isScrolled ? "text-blue-700" : "text-blue-500"
+            isScrolled ? "text-black" : "text-black"
           )}
         >
           Learn
@@ -38,7 +38,7 @@ export function NavbarMiddleSection({ className }: { className?: string }) {
           href={"/#blogs"}
           className={cn(
             "group flex flex-col gap-0.5 cursor-pointer text-lg md:text-xl font-bold dark:text-white",
-            isScrolled ? "text-blue-700" : "text-blue-500"
+            isScrolled ? "text-black" : "text-black"
           )}
         >
           Blogs
