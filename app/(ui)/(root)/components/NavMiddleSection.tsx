@@ -35,7 +35,7 @@ export function NavbarMiddleSection({ className }: { className?: string }) {
         </a>
 
         <a
-          href={"/#blogs"}
+          href={"/blogs"}
           className={cn(
             "group flex flex-col gap-0.5 cursor-pointer text-lg md:text-xl font-bold dark:text-white",
             isScrolled ? "text-black" : "text-black"

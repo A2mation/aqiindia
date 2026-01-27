@@ -1,4 +1,9 @@
 "use client";
+import { useState } from "react";
+import { usePathname } from 'next/navigation'
+import { PencilLine } from "lucide-react";
+
+
 import {
   Navbar,
   NavBody,
@@ -9,14 +14,12 @@ import {
   MobileNavToggle,
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
-import { useState } from "react";
-
 import Searchbar from "./Searchbar";
 import { NavbarMiddleSection } from "./NavMiddleSection";
 import { Button } from "@/components/ui/button";
 
 export function NavbarMain() {
-
+  const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -35,7 +38,11 @@ export function NavbarMain() {
 
 
           <div className="flex items-center gap-4">
-            <Button variant="secondary">Login</Button>
+            {pathname.startsWith('/blog') ? <>
+              <Button variant="secondary" className="text-base"> <PencilLine /> Write </Button>
+            </> : <>
+              <Button variant="secondary">Login</Button>
+            </>}
             <Button variant="default">Book a call</Button>
           </div>
         </NavBody>
