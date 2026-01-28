@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { Plus } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import ImageUpload from "@/components/blog/ImageUpload"
@@ -35,6 +36,7 @@ const WriteYourBlogPage = () => {
   const {
     editor
   } = useEditorStore();
+  const router = useRouter();
   const [tags, setTags] = useState<Category[]>([])
   const [blog, setBlog] = useState("")
   const [title, setTitle] = useState("")
@@ -73,7 +75,7 @@ const WriteYourBlogPage = () => {
     }
 
     try {
-      await axios.post("/api/blogs", {
+      await axios.post("/api/blog", {
         tags,
         img,
         title,
@@ -81,9 +83,8 @@ const WriteYourBlogPage = () => {
       })
 
       toast.success("Post Created Successfully")
-      setTitle("")
-      setBlog("")
-      setImg(undefined)
+      router.refresh();
+      
     } catch {
       toast.error("Something went wrong")
     } finally {
@@ -92,7 +93,7 @@ const WriteYourBlogPage = () => {
   }
 
 
-  console.log(tags)
+  console.log(blog)
   return (
     <div className="border my-4 rounded-md">
       <div className="p-4 border-b">
@@ -139,7 +140,7 @@ const WriteYourBlogPage = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit" variant="outline" disabled={isLoading}>
+          <Button type="submit" variant="outline" disabled={isLoading} className="hover:cursor-pointer">
             {isLoading ? "Publishing..." : "Publish"}
           </Button>
         </div>
