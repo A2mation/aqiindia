@@ -3,16 +3,8 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { Plus } from "lucide-react"
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import ImageUpload from "@/components/blog/ImageUpload"
 import { Label } from "@/components/ui/label"
@@ -21,8 +13,8 @@ import { dummyBlogContents } from "@/components/blog/BlogCardList"
 import BlogEditor from "@/components/blog/BlogEditor"
 import { useEditorStore } from "@/store/use-editor-store"
 import { MultiSelect } from "@/components/ui/multi-select"
-import { Plus } from "lucide-react"
-import type { Option } from "@/components/ui/multi-select"
+import { Category } from "@/store/category.store"
+
 
 
 interface CategoriesProps {
@@ -43,11 +35,10 @@ const WriteYourBlogPage = () => {
   const {
     editor
   } = useEditorStore();
-  const [tags, setTags] = useState<Option[]>([])
+  const [tags, setTags] = useState<Category[]>([])
   const [blog, setBlog] = useState("")
   const [title, setTitle] = useState("")
   const [img, setImg] = useState<string | undefined>()
-  const [catSlug, setCatSlug] = useState("")
   const [category, setCategory] = useState<CategoriesProps[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -75,17 +66,22 @@ const WriteYourBlogPage = () => {
       return
     }
 
+    if (tags.length === 0) {
+      toast.error("One category must be selected")
+      setIsLoading(false)
+      return
+    }
+
     try {
       await axios.post("/api/blogs", {
-        title,
-        catSlug,
-        blog,
+        tags,
         img,
+        title,
+        blog,
       })
 
       toast.success("Post Created Successfully")
       setTitle("")
-      setCatSlug("")
       setBlog("")
       setImg(undefined)
     } catch {
@@ -96,7 +92,7 @@ const WriteYourBlogPage = () => {
   }
 
 
-  console.log(img)
+  console.log(tags)
   return (
     <div className="border my-4 rounded-md">
       <div className="p-4 border-b">
@@ -129,7 +125,7 @@ const WriteYourBlogPage = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title of your story..."
-            className="w-full border rounded-md p-2"
+            className="w-full border rounded-md p-4"
           />
         </div>
 

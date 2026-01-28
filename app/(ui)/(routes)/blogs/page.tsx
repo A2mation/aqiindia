@@ -1,7 +1,12 @@
+'use client'
+
+import { useEffect } from "react";
+
+import Menu from "@/components/blog/Menu";
+import Featured from "@/components/blog/Feature";
+import { getCategoryData } from "@/store/category.actions";
 import { BlogCardList } from "@/components/blog/BlogCardList";
 import { CategoryList } from "@/components/blog/CategoryList";
-import Featured from "@/components/blog/Feature";
-import Menu from "@/components/blog/Menu";
 
 interface Props {
     page: number
@@ -13,6 +18,10 @@ export default function BlogPage() {
     const { cat } = {
         cat: 'ayan'
     };
+
+    useEffect(() => {
+        getCategoryData();
+    }, [])
 
     return (
         <>

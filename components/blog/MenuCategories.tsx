@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import {
     Select,
     SelectContent,
@@ -10,10 +11,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { dummyCategories } from "./CategoryList";
+import { useCategoryStore } from "@/store/category.store";
 
 const MenuCategories = () => {
     const router = useRouter();
+    const {
+        categories: category,
+    } = useCategoryStore();
 
     return (
         <div className="mt-8 mb-16 flex flex-wrap gap-4">
@@ -30,10 +34,10 @@ const MenuCategories = () => {
                     <SelectGroup>
                         <SelectLabel>Choose categories</SelectLabel>
 
-                        {dummyCategories.map((item) => (
+                        {category.map((item) => (
                             <SelectItem
                                 key={item.id}
-                                value={item.slug} 
+                                value={item.slug}
                             >
                                 {item.title}
                             </SelectItem>

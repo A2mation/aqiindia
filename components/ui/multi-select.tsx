@@ -3,32 +3,31 @@
 import { useEffect, useRef, useState } from 'react'
 import { X, ChevronDown } from 'lucide-react'
 
-export interface Option {
-    label: string
-    color: string
-}
+import { Category, useCategoryStore } from '@/store/category.store'
+import { getCategoryData } from '@/store/category.actions'
 
-const ALL_OPTIONS: Option[] = [
-    { label: 'Ocean', color: 'bg-cyan-100 text-cyan-800' },
-    { label: 'Blue', color: 'bg-blue-100 text-blue-800' },
-    { label: 'Orange', color: 'bg-orange-100 text-orange-800' },
-    { label: 'Red', color: 'bg-red-100 text-red-800' },
-    { label: 'Purple', color: 'bg-purple-100 text-purple-800' },
-    { label: 'Yellow', color: 'bg-yellow-100 text-yellow-800' },
-    { label: 'Green', color: 'bg-green-100 text-green-800' },
-    { label: 'Forest', color: 'bg-emerald-100 text-emerald-800' },
-    { label: 'Slate', color: 'bg-slate-100 text-slate-800' },
-    { label: 'Silver', color: 'bg-gray-100 text-gray-800' },
-]
 
 interface MultiSelectProps {
-    value: Option[]
-    onChange: (value: Option[]) => void
+    value: Category[]
+    onChange: (value: Category[]) => void
 }
 
 export function MultiSelect({ value, onChange }: MultiSelectProps) {
     const [isOpen, setIsOpen] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
+
+    const {
+        categories,
+        loading,
+    } = useCategoryStore()
+
+    useEffect(() => {
+        if (categories.length === 0) {
+            getCategoryData();
+        }
+        return;
+    }, [])
+
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -44,16 +43,17 @@ export function MultiSelect({ value, onChange }: MultiSelectProps) {
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
-    const unselectedOptions = ALL_OPTIONS.filter(
-        option => !value.find(v => v.label === option.label)
+    const unselectedOptions = categories.filter(
+        option => !value.some(v => v.id === option.id)
     )
 
-    const handleRemove = (label: string) => {
-        onChange(value.filter(item => item.label !== label))
+    const handleRemove = (id?: string) => {
+        if (!id) return
+        onChange(value.filter(item => item.id !== id))
     }
 
-    const handleSelect = (option: Option) => {
-        onChange([...value, option])
+    const handleSelect = (cat: Category) => {
+        onChange([...value, cat])
         setIsOpen(false)
     }
 
@@ -63,65 +63,82 @@ export function MultiSelect({ value, onChange }: MultiSelectProps) {
 
     return (
         <div className="w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4 text-gray-900">
-                Multi Select
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+                Select Categories
             </h2>
 
             <div ref={containerRef} className="relative">
-                <div className="relative border-2 border-blue-500 rounded-lg bg-white">
-                    <div className="flex flex-wrap items-center gap-2 p-3">
-                        {value.map(item => (
-                            <div
-                                key={item.label}
-                                className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${item.color}`}
-                            >
-                                <span>{item.label}</span>
-                                <button
-                                    onClick={() => handleRemove(item.label)}
-                                    className="hover:opacity-70 transition-opacity"
+                <div className="border-2 border-blue-500 rounded-lg bg-white">
+                    <div
+                        className="
+                            grid 
+                            grid-cols-[1fr_auto] 
+                            items-center
+                            gap-2
+                            p-3
+                        "
+                    >
+                        {/* LEFT: selected items + input */}
+                        <div className="flex flex-wrap items-center gap-2 min-w-0">
+                            {value.map(item => (
+                                <div
+                                    key={item.id}
+                                    className="flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium"
                                 >
-                                    <X size={16} />
-                                </button>
-                            </div>
-                        ))}
+                                    <span className="whitespace-nowrap">{item.title}</span>
+                                    <button
+                                        onClick={() => handleRemove(item.id)}
+                                        className="hover:opacity-70 transition-opacity"
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                </div>
+                            ))}
 
-                        {value.length > 0 && (
+                            {/* input always present */}
                             <input
                                 type="text"
-                                className="flex-1 outline-none bg-transparent text-sm min-w-20"
-                                onFocus={() => setIsOpen(true)}
+                                className="flex-1 min-w-20 outline-none bg-transparent text-sm"
+                                onFocus={() => !loading && setIsOpen(true)}
+                                readOnly
                             />
-                        )}
-                    </div>
+                        </div>
 
-                    <div className="absolute right-0 top-0 h-full flex items-center gap-1 pr-2">
-                        {value.length > 0 && (
+                        {/* RIGHT: action buttons */}
+                        <div className="flex items-center gap-1">
+                            {value.length > 0 && (
+                                <button
+                                    type='button'
+                                    onClick={handleClearAll}
+                                    className="p-1 hover:bg-gray-200 rounded transition-colors"
+                                    title="Clear all"
+                                >
+                                    <X size={18} className="text-gray-600" />
+                                </button>
+                            )}
                             <button
-                                onClick={handleClearAll}
+                                type='button'
+                                onClick={() => !loading && setIsOpen(!isOpen)}
                                 className="p-1 hover:bg-gray-200 rounded transition-colors"
-                                title="Clear all"
                             >
-                                <X size={18} className="text-gray-600" />
+                                <ChevronDown size={18} className="text-gray-600" />
                             </button>
-                        )}
-                        <button
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="p-1 hover:bg-gray-200 rounded transition-colors"
-                        >
-                            <ChevronDown size={18} className="text-gray-600" />
-                        </button>
+                        </div>
                     </div>
                 </div>
 
-                {isOpen && unselectedOptions.length > 0 && (
+
+
+                {isOpen && !loading && unselectedOptions.length > 0 && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                         {unselectedOptions.map(option => (
                             <button
-                                key={option.label}
+                                type='button'
+                                key={option.id}
                                 onClick={() => handleSelect(option)}
                                 className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors text-gray-700 text-sm"
                             >
-                                {option.label}
+                                {option.title}
                             </button>
                         ))}
                     </div>
