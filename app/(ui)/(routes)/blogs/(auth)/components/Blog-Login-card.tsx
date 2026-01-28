@@ -136,8 +136,8 @@ export function BlogLoginCard({ title, desc, type }: Props) {
                     <Link
                         href={
                             isSignup
-                                ? "/blogs/auth/sign-in"
-                                : "/blogs/auth/sign-up"
+                                ? "/blogs/sign-in"
+                                : "/blogs/sign-up"
                         }
                         className={cn(buttonVariants({ variant: "link" }))}
                     >
