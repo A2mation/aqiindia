@@ -8,10 +8,14 @@ const TOKEN_NAME = process.env.WRITTER_TOKEN!;
 
 export async function DELETE(
     req: NextRequest,
-    { params }: { params: { blogId: string } }
+    params: { params: Promise<{ blogId: string }> }
 ) {
     try {
+        const { blogId } = await params.params;
 
+        if (!blogId) {
+            return NextResponse.json({ message: "POST ID not found" }, { status: 401 });
+        }
         const token = req.cookies.get(TOKEN_NAME)?.value;
 
         if (!token) {
@@ -39,7 +43,7 @@ export async function DELETE(
 
 
         const post = await prisma.blogPost.findUnique({
-            where: { id: params.blogId },
+            where: { id: blogId },
             select: { id: true, authorId: true },
         });
 

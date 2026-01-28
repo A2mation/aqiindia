@@ -44,6 +44,8 @@ const BlogEditor = ({ value, onChange }: BlogEditorProps) => {
         ],
         content: value,
         onUpdate({ editor }) {
+            const html = editor.getHTML();
+            onChange(html)
             setEditor(editor)
         },
         onCreate({ editor }) {
@@ -156,7 +158,7 @@ const BlogEditor = ({ value, onChange }: BlogEditorProps) => {
 
         <div className="border rounded-md">
             <ContextMenu>
-               
+
                 <ContextMenuTrigger asChild>
                     <div>
                         <EditorContent editor={editor} />
@@ -165,21 +167,21 @@ const BlogEditor = ({ value, onChange }: BlogEditorProps) => {
 
                 {/* Context menu */}
                 <ContextMenuContent className="flex flex-col justify-center w-full gap-1 p-1">
-                    
+
                     {section[1].map((item) => (
                         <ToolbarButton key={item.lable} {...item} />
                     ))}
 
                     <ContextMenuSeparator />
 
-                    
+
                     {section[0].map((item) => (
                         <ToolbarButton key={item.lable} {...item} />
                     ))}
 
                     <ContextMenuSeparator />
 
-                   
+
                     {section[2].map((item) => (
                         <ToolbarButton key={item.lable} {...item} />
                     ))}
