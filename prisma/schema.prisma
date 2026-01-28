@@ -13,6 +13,12 @@ enum AQISource {
   OPENAQI
 }
 
+enum ContentWriterStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
 model AQIReading {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -142,21 +148,20 @@ model Category {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 model ContentWriter {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String              @id @default(auto()) @map("_id") @db.ObjectId
   name     String
-  email    String @unique
+  email    String              @unique
   password String
+  status   ContentWriterStatus @default(ACTIVE)
 
   posts    BlogPost[]
   comments Comment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 model BlogPost {

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { PencilLine } from "lucide-react";
 
 
@@ -19,7 +19,8 @@ import { NavbarMiddleSection } from "./NavMiddleSection";
 import { Button } from "@/components/ui/button";
 
 export function NavbarMain() {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -39,7 +40,7 @@ export function NavbarMain() {
 
           <div className="flex items-center gap-4">
             {pathname.startsWith('/blog') ? <>
-              <Button variant="secondary" className="text-base"> <PencilLine /> Write </Button>
+              <Button variant="secondary" className="text-base cursor-pointer" onClick={() => router.push('/blogs/write')}> <PencilLine /> Write </Button>
             </> : <>
               <Button variant="secondary">Login</Button>
             </>}
@@ -69,13 +70,13 @@ export function NavbarMain() {
 
             <div className="flex w-full flex-col gap-4">
               <NavbarMiddleSection className="top-10" />
-              <Button
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="default"
-                className="w-full"
-              >
-                Login
-              </Button>
+
+              {pathname.startsWith('/blog') ? <>
+                <Button variant="secondary" className="text-base w-full cursor-pointer" onClick={() => router.push('/blogs/write')}> <PencilLine /> Write </Button>
+              </> : <>
+                <Button variant="secondary" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>Login</Button>
+              </>}
+
               <Button
                 onClick={() => setIsMobileMenuOpen(false)}
                 variant="default"

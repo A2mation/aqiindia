@@ -1,7 +1,10 @@
 "use client"
 
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast";
+import Link from "next/link"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
@@ -26,7 +29,6 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 
-import Link from "next/link"
 
 import {
     signInSchema,
@@ -34,14 +36,16 @@ import {
     SignInValues,
     SignUpValues,
 } from "./schemas"
+import { http } from "@/lib/http";
+import { useState } from "react";
 
 export const BLOGPAGEAUTHTYPE = {
-  SIGNUP: "SIGNUP",
-  SIGNIN: "SIGNIN",
+    SIGNUP: "SIGNUP",
+    SIGNIN: "SIGNIN",
 } as const
 
 export type BlogPageAuthType =
-  (typeof BLOGPAGEAUTHTYPE)[keyof typeof BLOGPAGEAUTHTYPE]
+    (typeof BLOGPAGEAUTHTYPE)[keyof typeof BLOGPAGEAUTHTYPE]
 
 interface Props {
     title: string
@@ -50,6 +54,8 @@ interface Props {
 }
 
 export function BlogLoginCard({ title, desc, type }: Props) {
+    const router = useRouter()
+    const [loading, setLoading] = useState(false);
     const isSignup = type === BLOGPAGEAUTHTYPE.SIGNUP
     // console.log(type)
 
@@ -60,9 +66,60 @@ export function BlogLoginCard({ title, desc, type }: Props) {
             : { email: "", password: "" },
     })
 
-    function onSubmit(values: SignInValues | SignUpValues) {
-        console.log(values)
-        // handle auth here
+    async function onSubmit(values: SignInValues | SignUpValues) {
+        const isSignup = "name" in values
+
+        const endpoint = isSignup
+            ? 'api/blog/auth/register'
+            : 'api/blog/auth/login';
+
+        const toastId = toast.loading(
+            isSignup ? "Creating account..." : "Signing in..."
+        );
+
+        try {
+            setLoading(true)
+
+            const res = await http.post(endpoint, values)
+            console.log(res)
+
+            if (res.status == 200) {
+                toast.success(
+                    isSignup
+                        ? "Account created successfully 🎉"
+                        : "Welcome back 👋",
+                    { id: toastId }
+                );
+    
+                form.reset();
+                router.push('/blogs');
+                setLoading(false)
+            } 
+
+            if (res.status == 401) {
+                toast.error(
+                    res.statusText,
+                    { id: toastId }
+                );
+    
+                form.reset();
+            }
+
+        } catch (error: any) {
+            console.log(error)
+            if (!error.response) {
+                toast.error("Network error. Please try again.");
+            }
+
+            const message =
+                error?.response?.data?.message ||
+                "Something went wrong";
+
+            toast.error(message, { id: toastId });
+        } finally {
+            setLoading(false)
+        }
+
     }
 
     return (
@@ -123,7 +180,7 @@ export function BlogLoginCard({ title, desc, type }: Props) {
                             )}
                         />
 
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full" disabled={loading}>
                             {title}
                         </Button>
                     </form>

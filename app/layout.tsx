@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+
 import { Footer } from "@/components/aqi-ui/footer";
-import "./globals.css";
 import { NavbarMain } from "./(ui)/(root)/components/Navbar";
 import VisitCounter from "@/components/VisitCounter";
+import "./globals.css";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -71,13 +73,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <head>
-        <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png"/>
+        <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
       </head>
       <body className="font-poppins">
         <NavbarMain />
         {children}
         <Footer />
         <VisitCounter />
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
