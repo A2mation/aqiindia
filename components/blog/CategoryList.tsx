@@ -2,10 +2,13 @@
 
 
 import Link from "next/link"
+import Image from 'next/image'
+import { FunnelX } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useCategoryStore } from "@/store/category.store"
+import { cn } from "@/lib/utils"
 
 const colorCodes = [
     "#57c4ff31",
@@ -18,7 +21,7 @@ const colorCodes = [
 
 export const CategoryList = () => {
     const {
-        categories : category,
+        categories: category,
         loading
     } = useCategoryStore();
 
@@ -36,9 +39,13 @@ export const CategoryList = () => {
 
     return (
         <div>
-            <h1 className="my-8 text-3xl font-semibold">Popular Categories</h1>
+            <h1 className="my-8 text-3xl flex items-center gap-x-4 font-semibold">
+                Popular Categories
+                <Image src={'/assets/cheer.webp'} width={45} height={45} alt="cheer" />
+            </h1>
 
             <div className="flex flex-wrap gap-4">
+
                 {category.toSpliced(4).map((item, index) => (
                     <Link
                         key={item.id}
@@ -57,7 +64,28 @@ export const CategoryList = () => {
                         </Button>
                     </Link>
                 ))}
+                <div className="flex justify-center items-center">
+
+                    <Link
+                        href={`/blogs`}
+                        className={cn(
+                            "flex items-center gap-2 p-2 rounded-lg",
+                            buttonVariants({
+                                variant: "destructive"
+                            })
+                        )}
+
+                    >
+                        <span
+                            className="font-light flex items-center gap-2 hover:opacity-80 hover:cursor-pointer"
+
+                        >
+                            <FunnelX /> Clear Filter
+                        </span>
+                    </Link>
+                </div>
             </div>
+
         </div>
     )
 }

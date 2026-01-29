@@ -3,7 +3,7 @@ import {
   useEffect,
   useState
 } from "react";
-import axios from "axios";
+import Image from 'next/image'
 import toast from "react-hot-toast";
 
 import Pagination from "./Pagination";
@@ -126,7 +126,10 @@ export const BlogCardList = ({ page, cat }: BlogCardListProps) => {
 
   return (
     <div className="flex-5">
-      <h1 className="my-8 text-3xl font-semibold">Recent Posts</h1>
+      <h1 className="my-8 text-3xl flex items-center gap-x-2 font-semibold">
+        Recent Posts
+        <Image src={'/assets/recent.webp'} width={40} height={40} alt="recent" />
+      </h1>
       <div>
         {post?.map((item: BlogContentProps, index) => (
           <div key={index}>

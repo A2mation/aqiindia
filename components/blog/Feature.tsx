@@ -15,12 +15,12 @@ const Featured = () => {
     return (
         (<div className="mt-10">
             <h1 className="text-6xl font-light mb-8">
-                <b>Hey, {user?.name} !</b> Discover stories and creative ideas.
+                <b>Hey, Buddy!</b> Hold a minute and take a deep breath.
             </h1>
             <div className="flex flex-col lg:flex-row items-center lg:gap-16">
                 <div className="lg:flex-1 lg:h-96 relative">
                     <img
-                        src="https://images.unsplash.com/photo-1677442136019-21780ecad995"
+                        src="https://www.shutterstock.com/image-photo/good-air-quality-clean-outdoor-600nw-2421635111.jpg"
                         alt=""
                         // fill
                         sizes="100vw"
@@ -30,14 +30,18 @@ const Featured = () => {
                 </div>
                 <div className="lg:flex-1 mt-8 lg:mt-0">
                     <h1 className="text-3xl font-semibold mb-4">
-                        Stay Ahead of the Curve: Delve into Our Tech Blogs for the Latest Trends.
+                        Breathe Better: Understand Air Quality and Its Impact on Your Life.
                     </h1>
                     <p className="text-lg font-light mb-4">
-                        Our Tech Blogs section is a treasure trove of insights, offering a
-                        rich tapestry of articles that delve into the heart of technology.
-                        Here, users can discover a wealth of knowledge, from the latest industry
-                        trends to expert analyses and practical tips.
+                        Air quality plays a crucial role in our health, well-being, and daily
+                        comfort. From the air we breathe indoors to pollution levels outdoors,
+                        understanding air quality helps us make smarter choices for a healthier life.
+                    </p>
 
+                    <p className="text-lg font-light mb-4">
+                        Here, you’ll find insights into air pollution, AQI levels, seasonal changes,
+                        and practical tips to protect yourself and your loved ones. Take a moment,
+                        slow down, and learn how cleaner air can make a real difference.
                     </p>
 
                 </div>

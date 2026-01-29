@@ -1,67 +1,94 @@
 "use client"
 
 import Link from "next/link";
+import { http } from "@/lib/http";
+import { useEffect, useState } from "react";
+import Image from 'next/image'
 
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton"
-import { dummyBlogContents } from "./BlogCardList";
 import { truncateText } from "@/helpers/truncateText";
+import { dummyBlogContents } from "./BlogCardList";
 
 interface MenuPostProps {
     withImage: boolean;
 }
 
+interface PopularPost {
+    id: string;
+    title: string;
+    author: {
+        name: string;
+    };
+    img: string
+    createdAt: string;
+}
+
 
 
 const MenuPosts = ({ withImage }: MenuPostProps) => {
-    const isLoading = false
+    const [posts, setPosts] = useState<PopularPost[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
 
-    // TODO:: LOAD MOST POPULAR POST
+    useEffect(() => {
+        const fetchPopularPosts = async () => {
+            try {
+                const res = await http.get("/api/blog/most-popular");
+                setPosts(res.data.posts || []);
+            } catch (error) {
+                console.error("Failed to load popular posts", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchPopularPosts();
+    }, []);
 
     if (isLoading) {
         return (
-            <div className="flex items-center space-x-4">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                    <Skeleton className="h-4 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                </div>
+            <div className="flex items-center flex-row space-x-4">
+                <Skeleton className="h-10 w-12 rounded-full" />
+                <Skeleton className="h-10 w-12 rounded-full" />
+                <Skeleton className="h-10 w-12 rounded-full" />
             </div>
         )
     }
 
     return (
         <div className="mt-9 mb-16 flex flex-col gap-9">
-            <Link href="/" className="flex items-stretch gap-4">
-                {dummyBlogContents.map((items: any, index: number) => (
-                    <div
-                        key={index}
-                        className="flex-1 flex flex-col justify-between min-h-[160px]"
-                    >
-                        <Button
-                            size="icon"
-                            className="px-8 rounded-lg bg-red-500 hover:bg-red-600 text-white text-xs w-fit"
+            <div className="flex items-stretch gap-4">
+                {posts.map((items: PopularPost, index: number) => (
+                    <Link key={index} href="/" >
+                        <div
+
+                            className="flex-1 flex flex-col justify-between min-h-[160px]"
                         >
-                            {items.catSlug}
-                        </Button>
+                            <Image
+                                src={items.img}
+                                width={55}
+                                height={20}
+                                alt="Picture of the author"
+                            />
 
-                        <h3
-                            className="text-sm pt-2 font-semibold text-gray-800 line-clamp-3"
-                            dangerouslySetInnerHTML={{
-                                __html: truncateText(items.title, 5),
-                            }}
-                        />
+                            <h3
+                                className="text-sm pt-2 font-semibold text-gray-800 line-clamp-3"
+                                dangerouslySetInnerHTML={{
+                                    __html: truncateText(items.title, 5),
+                                }}
+                            />
 
-                        <div className="flex flex-col md:items-center text-sm text-gray-600 mt-auto">
-                            <span className="pt-2 md:pt-0">{items.author.name}</span>
-                            <br />
-                            <span className="text-xs">10.02.2025</span>
+                            <div className="flex flex-col md:items-start mt-2 px-0 text-sm text-gray-600">
+                                <span className="pt-2 md:pt-0">{items.author.name}</span>
+                                <br />
+                                <span className="text-xs">10.02.2025</span>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
-            </Link>
+            </div>
         </div>
 
     );
