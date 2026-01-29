@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
 
             prisma.blogPost.count({ where }),
         ]);
-        console.log("Length"+posts.length)
+        // console.log("Length"+posts.length)
 
 
         return NextResponse.json({

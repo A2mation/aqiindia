@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
-import { ContentWriterStatus } from "@prisma/client";
 
-const WRITTER_JWT_SECRET = process.env.WRITTER_JWT_SECRET!;
-const TOKEN_NAME = process.env.WRITTER_TOKEN!;
 
 export async function DELETE(
     req: NextRequest,
@@ -13,34 +9,12 @@ export async function DELETE(
     try {
         const { blogId } = await params.params;
 
+        
         if (!blogId) {
             return NextResponse.json({ message: "POST ID not found" }, { status: 401 });
         }
-        const token = req.cookies.get(TOKEN_NAME)?.value;
-
-        if (!token) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
-
-        let decoded: {
-            id: string;
-            email: string;
-            status: ContentWriterStatus;
-        };
-
-        try {
-            decoded = jwt.verify(token, WRITTER_JWT_SECRET) as typeof decoded;
-        } catch {
-            return NextResponse.json({ message: "Invalid token" }, { status: 401 });
-        }
-
-        if (decoded.status !== ContentWriterStatus.ACTIVE) {
-            return NextResponse.json(
-                { message: "Account not active" },
-                { status: 403 }
-            );
-        }
-
+        
+        // TODO:: ADD AUTHENTICATION
 
         const post = await prisma.blogPost.findUnique({
             where: { id: blogId },
@@ -54,16 +28,21 @@ export async function DELETE(
             );
         }
 
-        if (post.authorId !== decoded.id) {
-            return NextResponse.json(
-                { message: "Forbidden" },
-                { status: 403 }
-            );
-        }
 
-        await prisma.blogPost.delete({
-            where: { id: post.id },
-        });
+        await prisma.$transaction([
+            prisma.blogPostCategory.deleteMany({
+                where: {
+                    postId: post.id,
+                },
+            }),
+
+            prisma.blogPost.delete({
+                where: {
+                    id: post.id,
+                },
+            }),
+        ]);
+
 
         return NextResponse.json(
             { message: "Post deleted successfully" },
