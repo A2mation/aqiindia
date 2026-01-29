@@ -55,7 +55,7 @@ const MenuPosts = ({ withImage }: MenuPostProps) => {
                         />
 
                         <div className="flex flex-col md:items-center text-sm text-gray-600 mt-auto">
-                            <span className="pt-2 md:pt-0">{items.user.name}</span>
+                            <span className="pt-2 md:pt-0">{items.author.name}</span>
                             <br />
                             <span className="text-xs">10.02.2025</span>
                         </div>

@@ -1,10 +1,11 @@
 "use client"
 
+import Link from "next/link"
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form"
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import toast from "react-hot-toast";
-import Link from "next/link"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
@@ -66,61 +67,49 @@ export function BlogLoginCard({ title, desc, type }: Props) {
             : { email: "", password: "" },
     })
 
-    async function onSubmit(values: SignInValues | SignUpValues) {
-        const isSignup = "name" in values
 
-        const endpoint = isSignup
-            ? 'api/blog/auth/register'
-            : 'api/blog/auth/login';
+    async function onSubmit(values: SignInValues | SignUpValues) {
+        const isSignup = "name" in values;
 
         const toastId = toast.loading(
             isSignup ? "Creating account..." : "Signing in..."
         );
 
         try {
-            setLoading(true)
+            setLoading(true);
 
-            const res = await http.post(endpoint, values)
-            console.log(res)
+            // 🟢 SIGNUP stays manual
+            if (isSignup) {
+                await http.post("api/blog/auth/register", values);
 
-            if (res.status == 200) {
-                toast.success(
-                    isSignup
-                        ? "Account created successfully 🎉"
-                        : "Welcome back 👋",
-                    { id: toastId }
-                );
-    
+                toast.success("Account created successfully 🎉", { id: toastId });
                 form.reset();
-                router.push('/blogs');
-                setLoading(false)
-            } 
-
-            if (res.status == 401) {
-                toast.error(
-                    res.statusText,
-                    { id: toastId }
-                );
-    
-                form.reset();
+                router.push("/blogs");
+                return;
             }
 
+            const res = await signIn("writer", {
+                ...values,
+                redirect: false,
+            });
+
+            if (res?.error) {
+                toast.error(res.error, { id: toastId });
+                return;
+            }
+
+            toast.success("Welcome back 👋", { id: toastId });
+            form.reset();
+            router.push("/blogs");
         } catch (error: any) {
-            console.log(error)
-            if (!error.response) {
-                toast.error("Network error. Please try again.");
-            }
-
             const message =
-                error?.response?.data?.message ||
-                "Something went wrong";
-
+                error?.response?.data?.message || "Something went wrong";
             toast.error(message, { id: toastId });
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-
     }
+
 
     return (
         <Card className="w-full max-w-sm">

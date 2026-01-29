@@ -1,4 +1,4 @@
-import React from 'react'
+import { Suspense } from "react";
 
 
 const DashboardLayout = async ({
@@ -7,9 +7,11 @@ const DashboardLayout = async ({
 
     return (
         <>
-            <div className='max-w-7xl mx-auto mt-20 px-2 md:px-0'>
-                {children}
-            </div>
+            <Suspense>
+                <div className='max-w-7xl mx-auto mt-20 px-2 md:px-0'>
+                    {children}
+                </div>
+            </Suspense>
         </>
 
     )

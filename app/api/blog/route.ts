@@ -1,34 +1,91 @@
-import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { ContentWriterStatus } from "@prisma/client";
 
 import { Category } from "@/store/category.store";
+import { getAuthSession } from "@/auth";
+import { BLOG_POST_PER_PAGE } from "@/constant/blog-per-page";
 
-const WRITTER_JWT_SECRET = process.env.WRITTER_JWT_SECRET!;
-const TOKEN_NAME = process.env.WRITTER_TOKEN!;
+
+export async function GET(req: NextRequest) {
+    try {
+
+        const { searchParams } = new URL(req.url);
+
+        const cat = searchParams.get("cat");
+        const page = Number(searchParams.get("page") ?? 1);
+
+        const session = await getAuthSession();
+
+        const where = cat
+            ? {
+                categories: {
+                    some: {
+                        category: {
+                            slug: cat,
+                        },
+                    },
+                },
+            }
+            : {};
+        
+
+        const [posts, total] = await prisma.$transaction([
+            prisma.blogPost.findMany({
+                skip: BLOG_POST_PER_PAGE * (Number(page) - 1),
+                take: BLOG_POST_PER_PAGE as number,
+                where,
+                include: {
+                    author: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                    categories: {
+                        include: {
+                            category: true,
+                        },
+                    },
+                },
+            }),
+
+            prisma.blogPost.count({ where }),
+        ]);
+        console.log("Length"+posts.length)
+
+
+        return NextResponse.json({
+            page,
+            total,
+            posts,
+            viewer: session?.user?.role ?? "PUBLIC",
+        });
+
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Internal server error" },
+            { status: 500 }
+        );
+    }
+}
 
 export async function POST(req: NextRequest) {
     try {
-        const token = req.cookies.get(TOKEN_NAME)?.value;
+        const session = await getAuthSession();
 
-        if (!token) {
+        if (!session) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        let decoded: {
-            id: string;
-            email: string;
-            status: ContentWriterStatus;
-        };
-
-        try {
-            decoded = jwt.verify(token, WRITTER_JWT_SECRET) as typeof decoded;
-        } catch {
-            return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+        if (session.user.role !== "WRITER") {
+            return NextResponse.json({ message: "Forbidden" }, { status: 403 });
         }
 
-        if (decoded.status !== ContentWriterStatus.ACTIVE) {
+        if (
+            session.user.status &&
+            session.user.status !== ContentWriterStatus.ACTIVE
+        ) {
             return NextResponse.json(
                 { message: "Account not active" },
                 { status: 403 }
@@ -36,20 +93,14 @@ export async function POST(req: NextRequest) {
         }
 
         const writer = await prisma.contentWriter.findUnique({
-            where: { id: decoded.id },
+            where: { email: session.user.email },
         });
 
         if (!writer) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-
-        const { title, blog, img, tags }: {
-            title: string;
-            blog: string;
-            img?: string;
-            tags: Category[];
-        } = await req.json();
+        const { title, blog, img, tags } = await req.json();
 
         if (!title || !blog || !tags?.length) {
             return NextResponse.json(
@@ -58,13 +109,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const categoryId = tags.map((cat) => { return cat.id })
-
+        const categoryIds = tags.map((cat: Category) => cat.id);
 
         const categories = await prisma.category.findMany({
-            where: {
-                id: { in: categoryId },
-            },
+            where: { id: { in: categoryIds } },
             select: { id: true },
         });
 
@@ -75,24 +123,20 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const post = await prisma.$transaction(async (tx) => {
-            const blogPost = await tx.blogPost.create({
-                data: {
-                    title,
-                    desc: blog,
-                    img,
-                    authorId: writer.id,
+        const post = await prisma.blogPost.create({
+            data: {
+                title,
+                desc: blog,
+                img,
+                authorId: writer.id,
+                categories: {
+                    create: categories.map((cat) => ({
+                        category: {
+                            connect: { id: cat.id },
+                        },
+                    })),
                 },
-            });
-
-            await tx.blogPostCategory.createMany({
-                data: categories.map((cat) => ({
-                    postId: blogPost.id,
-                    categoryId: cat.id,
-                })),
-            });
-
-            return blogPost;
+            },
         });
 
         return NextResponse.json(
@@ -110,3 +154,4 @@ export async function POST(req: NextRequest) {
         );
     }
 }
+

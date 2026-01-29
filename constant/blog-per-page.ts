@@ -1,0 +1,1 @@
+export const BLOG_POST_PER_PAGE = 5 as number

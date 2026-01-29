@@ -13,8 +13,9 @@ export interface BlogContentProps {
     desc: string
     img?: string
     views?: number
-    userId: string
-    user: {}
+    authorId: string
+    likesCount: number
+    author: {}
 }
 
 export interface PropsBlogCard {

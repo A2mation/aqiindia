@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 import Pagination from "./Pagination";
 import { BlogCard, BlogContentProps } from "./BlogCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BLOG_POST_PER_PAGE } from "@/constant/blog-per-page";
+import { http } from "@/lib/http";
 
 
 
@@ -35,8 +37,9 @@ export const dummyBlogContents: BlogContentProps[] = [
     desc: "A beginner-friendly guide to building modern web apps using Next.js 14 and the App Router.",
     img: "https://images.unsplash.com/photo-1516116216624-53e697fedbea",
     views: 1245,
-    userId: "user_001",
-    user: dummyUser,
+    authorId: "user_001",
+    likesCount: 1,
+    author: dummyUser,
   },
   {
     id: "blog_002",
@@ -47,8 +50,9 @@ export const dummyBlogContents: BlogContentProps[] = [
     desc: "Learn how Zod simplifies schema validation and type safety in modern React and Next.js apps.",
     img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
     views: 876,
-    userId: "user_001",
-    user: dummyUser,
+    authorId: "user_001",
+    likesCount: 1,
+    author: dummyUser,
   },
   {
     id: "blog_003",
@@ -59,9 +63,11 @@ export const dummyBlogContents: BlogContentProps[] = [
     desc: "A deep dive into authentication patterns, server actions, and best practices in Next.js.",
     img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     views: 2310,
-    userId: "user_001",
-    user: dummyUser,
+    authorId: "user_001",
+    likesCount: 1,
+    author: dummyUser,
   },
+
 ]
 
 
@@ -72,50 +78,45 @@ export const BlogCardList = ({ page, cat }: BlogCardListProps) => {
   const [loading, setLoading] = useState(false);
 
 
-  const POST_PER_PAGE = 5;
 
-  const hasPrev = POST_PER_PAGE * (page - 1) > 0;
-  const hasNext = POST_PER_PAGE * (page - 1) + POST_PER_PAGE < postCount;
+  const hasPrev = BLOG_POST_PER_PAGE * (page - 1) > 0;
+  const hasNext = BLOG_POST_PER_PAGE * (page - 1) + BLOG_POST_PER_PAGE < postCount;
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
 
     const getData = async () => {
       try {
         setLoading(true);
 
-        //TODO:  simulate API call
-        timeoutId = setTimeout(() => {
-          setPostCount(dummyBlogContents.length);
-          setPost(dummyBlogContents);
-          setLoading(false);
-        }, 1000);
+        const res = await http.get(
+          `/api/blog?page=${page}&cat=${cat || ""}`
+        );
+        console.log(res.data)
+
+        setPostCount(res.data.total);
+        setPost(res.data.posts);
 
       } catch (err) {
         console.error(err);
         toast.error("Something went wrong");
         setLoading(false);
+      } finally {
+        setLoading(false)
       }
     };
 
     getData();
 
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
   }, [page, cat]);
 
 
   if (loading) {
     return (
-      <section className='flex flex-col mx-auto gap-4 my-5'>
-        {[...Array(3)].map((_, index) => (
+      <section className='flex flex-col justify-center mx-auto gap-4 my-5'>
+        <Skeleton className="h-15 w-[20%] rounded-xl" />
+        {[...Array(5)].map((_, index) => (
           <div key={index} className="flex flex-col space-y-3">
-            <Skeleton className="h-[125px] w-[100%] rounded-xl" />
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-[100%]" />
-              <Skeleton className="h-4 w-[100%]" />
-            </div>
+            <Skeleton className="h-50 w-full rounded-xl" />
           </div>
         ))}
       </section>

@@ -1,6 +1,7 @@
-'use client'
+'use client';
 
 import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 import Menu from "@/components/blog/Menu";
 import Featured from "@/components/blog/Feature";
@@ -8,33 +9,37 @@ import { getCategoryData } from "@/store/category.actions";
 import { BlogCardList } from "@/components/blog/BlogCardList";
 import { CategoryList } from "@/components/blog/CategoryList";
 
-interface Props {
-    page: number
-    cat: string
-}
-
 export default function BlogPage() {
-    const page = 1;
-    const { cat } = {
-        cat: 'ayan'
-    };
+    const searchParams = useSearchParams();
+
+    const page = Math.max(
+        1,
+        Number(searchParams.get("page") ?? 1)
+    );
+
+    const cat = searchParams.get("cat") ?? "";
 
     useEffect(() => {
         getCategoryData();
-    }, [])
+    }, []);
 
     return (
-        <>
-            {/* <PostForm/> */}
-            <div className="bg-white text-black mt-30">
-                <Featured />
-                <CategoryList />
-                <div className="flex flex-col md:flex-row gap-[50px]">
+
+        <div className="bg-white text-black mt-30">
+            <Featured />
+            <CategoryList />
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-[50px]">
+                <div className="md:col-span-4">
                     <BlogCardList page={page} cat={cat} />
-                    <Menu />
                 </div>
 
+                <div className="md:col-span-1">
+                    <Menu />
+                </div>
             </div>
-        </>
-    )
+
+        </div>
+
+    );
 }
