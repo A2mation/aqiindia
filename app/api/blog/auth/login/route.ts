@@ -2,12 +2,12 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
-import { signWriterToken } from "@/lib/jwt";
-
+import { signToken } from "@/lib/jwt";
 
 export async function POST(req: Request) {
     try {
         const { email, password } = await req.json();
+        console.log(email, password)
 
         const writer = await prisma.contentWriter.findUnique({
             where: { email },
@@ -21,7 +21,6 @@ export async function POST(req: Request) {
         }
 
         const isValid = await bcrypt.compare(password, writer.password);
-
         if (!isValid) {
             return NextResponse.json(
                 { message: "Invalid credentials" },
@@ -29,31 +28,21 @@ export async function POST(req: Request) {
             );
         }
 
-        const token = signWriterToken(writer.id, writer.email, writer.status);
+        
+        const token = signToken(writer.id, writer.email, writer.status);
 
-        const response = NextResponse.json({
-            message: "Login successful",
-            writer: {
-                id: writer.id,
-                name: writer.name,
-                email: writer.email,
-                status: writer.status
-            },
+        return NextResponse.json({
+            id: writer.id,
+            name: writer.name,
+            email: writer.email,
+            role: "WRITER",
+            accessToken: token,
         });
-
-        response.cookies.set(process.env.WRITTER_TOKEN!, token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            path: "/",
-            maxAge: 60 * 60 * 24 * 7, // 7 Days
-        });
-
-        return response;
 
     } catch (error) {
-        return new NextResponse("INTERNAL SERVER ERROR", {
-            status: 500
-        })
+        return NextResponse.json(
+            { message: "Internal server error" },
+            { status: 500 }
+        );
     }
 }

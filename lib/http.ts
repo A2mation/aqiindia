@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const http = axios.create({
-  baseURL: "/",
+  baseURL: process.env.NEXT_PUBLIC_SITE_URL,
   timeout: 10000,
   validateStatus: () => true,
   headers: {

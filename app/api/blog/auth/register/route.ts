@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { ContentWriterStatus } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
-import { signWriterToken } from "@/lib/jwt";
+import { signToken } from "@/lib/jwt";
 
 const TOKEN_NAME = process.env.WRITTER_TOKEN!;
 
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
             },
         });
 
-        const token = signWriterToken(
+        const token = signToken(
             writer.id,
             writer.email,
             writer.status
