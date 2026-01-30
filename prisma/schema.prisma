@@ -153,6 +153,7 @@ model Category {
 model ContentWriter {
   id       String              @id @default(auto()) @map("_id") @db.ObjectId
   name     String
+  username String              @unique
   email    String              @unique
   password String
   status   ContentWriterStatus @default(ACTIVE)
