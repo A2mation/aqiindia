@@ -13,7 +13,7 @@ const layout = async ({
 
     return (
         <>
-            <AuthSessionProviders session={session}>
+            <AuthSessionProviders>
                 <section className="relative w-full">
                     {children}
                 </section>

@@ -19,7 +19,7 @@ const SingleBlogPage = ({
   const [blogContent, setBlogContent] = useState<BlogContentProps>();
   const [loading, setLoading] = useState(false);
 
-  console.log(id)
+  // console.log(id)
 
   useEffect(() => {
     const getData = async () => {
@@ -29,7 +29,7 @@ const SingleBlogPage = ({
         const res = await http.get(
           `/api/blog/profile/${username}/blog/${id}`
         );
-        console.log(res.data)
+        // console.log(res.data)
 
         setBlogContent(res.data);
 
@@ -83,9 +83,9 @@ const SingleBlogPage = ({
         <Header
           user={blogContent.author}
           views={5}
-          likedIds={["1", "2", "3"]}
+          likedIds={blogContent.likedIds}
           postId={id}
-          likesCount={3}
+          likesCount={blogContent.likesCount}
           createdAt={blogContent.createdAt}
         />
       </div>

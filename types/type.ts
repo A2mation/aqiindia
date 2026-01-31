@@ -21,5 +21,6 @@ export interface BlogContentProps {
     views?: number
     authorId: string
     likesCount: number
+    likedIds: []
     author: Author
 }

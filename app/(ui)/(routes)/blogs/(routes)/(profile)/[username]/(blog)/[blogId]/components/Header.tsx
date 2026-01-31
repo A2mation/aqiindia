@@ -1,120 +1,168 @@
-"use client"
+"use client";
 
-
-import {
-    useState
-} from 'react'
+import { useEffect, useState } from "react";
 import {
     ThumbsUp,
     User,
     Facebook,
     LinkedinIcon,
     Eye,
-    Twitter
-} from 'lucide-react';
+    Twitter,
+} from "lucide-react";
 import {
     FacebookShareButton,
     LinkedinShareButton,
     TwitterShareButton,
 } from "react-share";
+import toast from "react-hot-toast";
 
 import {
-    AvatarImage,
-    AvatarFallback,
-    Avatar
-} from "@/components/ui/avatar"
-
-import { Button } from '@/components/ui/button';
-import { Author } from '@/types/type';
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Author } from "@/types/type";
+import useLike from "@/hooks/useLike";
 
 interface UserProps {
-    user: Author,
-    views: number,
-    likedIds: string[],
-    postId: string,
-    likesCount: number
-    createdAt: Date
+    user: Author;
+    views: number;
+    likedIds: string[];
+    postId: string;
+    likesCount: number;
+    createdAt: Date;
 }
 
-export const Header = (user: UserProps) => {
-    const [isLoading, setIsLoading] = useState(false);
-    // TODO:: Handel Like and unlike post
+export const Header = ({
+    user,
+    views,
+    likedIds,
+    postId,
+    likesCount,
+    createdAt,
+}: UserProps) => {
+    const {
+        hasLiked,
+        toggleLike,
+        isLoading,
+        success,
+        error,
+        isAuthenticated,
+    } = useLike({
+        postId,
+        likedIds,
+    });
 
 
+    const [localHasLiked, setLocalHasLiked] = useState(hasLiked);
+    const [localLikes, setLocalLikes] = useState(likesCount);
+
+
+    useEffect(() => {
+        setLocalHasLiked(hasLiked);
+    }, [hasLiked]);
+
+    const handleLike = async () => {
+        if (!isAuthenticated) {
+            toast.error("Please login to like this post");
+            return;
+        }
+
+
+        setLocalHasLiked((prev) => !prev);
+        setLocalLikes((prev) => (localHasLiked ? prev - 1 : prev + 1));
+
+        await toggleLike();
+    };
+
+
+    useEffect(() => {
+        if (!error) return;
+
+        setLocalHasLiked((prev) => !prev);
+        setLocalLikes((prev) => (localHasLiked ? prev + 1 : prev - 1));
+
+        toast.error(error);
+    }, [error]);
+
+
+    useEffect(() => {
+        if (!success) return;
+
+        toast.success(localHasLiked ? "Post liked" : "Post unliked");
+    }, [success, localHasLiked]);
 
     return (
-        <div>
-            <div className="max-w-6xl mx-auto p-4 border-y-2">
-                <div className="flex flex-col md:flex-row items-center justify-between">
-                    <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                        <Avatar>
-                            <AvatarFallback>
-                                <User />
-                            </AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col">
-                            <span className="text-sm font-semibold">{user.user.name}</span>
-                            <span className="text-xs text-gray-500">Published in The A2aqi Blogs • 7 min read • {user.createdAt.toString().substring(0, 10)}</span>
-                        </div>
+        <div className="max-w-6xl mx-auto p-4 border-y-2">
+            <div className="flex flex-col md:flex-row items-center justify-between">
+                {/* Author */}
+                <div className="flex items-center space-x-2 mb-4 md:mb-0">
+                    <Avatar>
+                        <AvatarFallback>
+                            <User />
+                        </AvatarFallback>
+                    </Avatar>
+
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold">{user.name}</span>
+                        <span className="text-xs text-gray-500">
+                            Published in The A2aqi Blogs • 7 min read •{" "}
+                            {createdAt.toString().substring(0, 10)}
+                        </span>
                     </div>
-                    <div className='flex justify-between gap-2'>
-                        <div className="flex items-center space-x-4">
-                            <div className="flex items-center space-x-1">
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center space-x-4">
+                    {/* Like */}
+                    <div className="flex items-center space-x-1">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+
                                 <Button
                                     size="icon"
                                     variant="link"
                                     disabled={isLoading}
+                                    onClick={handleLike}
+                                    className="hover:cursor-pointer"
                                 >
                                     <ThumbsUp
-                                        className="h-5 w-5 text-gray-500 "
-                                        color='red'
-                                        size={20}
-
+                                        className={`transition-colors duration-200 ${localHasLiked ? "text-blue-600" : "text-gray-600"
+                                            }`}
+                                        fill={localHasLiked ? "currentColor" : "none"}
                                     />
                                 </Button>
+                            </TooltipTrigger>
 
+                            <span className="text-sm">{localLikes}</span>
+                            <TooltipContent>
+                                <p>{localHasLiked ? "Already Liked" : "Like this post"}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
 
-                                <span className="text-sm">{user.likesCount}</span>
-                            </div>
+                    {/* Share */}
+                    <FacebookShareButton url="https://a2aqi.com">
+                        <Facebook className="h-5 w-5 text-blue-600" />
+                    </FacebookShareButton>
 
-                            <div className='flex'>
-                                <FacebookShareButton
-                                    url='a2aqi.com'
-                                    title='Shareing this Blog from A2AQI'
-                                    hashtag='#a2aqi'
+                    <TwitterShareButton url="https://a2aqi.com">
+                        <Twitter className="h-5 w-5 text-blue-600" />
+                    </TwitterShareButton>
 
-                                >
-                                    <Facebook color='blue' className="h-5 w-5 text-gray-500" />
-                                </FacebookShareButton>
-                            </div>
-                            <div className='flex'>
-                                <TwitterShareButton
-                                    url='a2aqi.com'
-                                    title='Shareing this Blog from A2AQI'
-                                    hashtags={["a2aqi"]}
-                                >
-                                    <Twitter color='blue' className="h-5 w-5 text-gray-500" />
-                                </TwitterShareButton>
-                            </div>
-                            <div className='flex'>
-                                <LinkedinShareButton
-                                    url='a2aqi.com'
-                                    title='Shareing this Blog from A2AQI'
-                                    summary='This is the description'
-                                >
-                                    <LinkedinIcon color='blue' className="h-5 w-5 text-gray-500" />
-                                </LinkedinShareButton>
-                            </div>
+                    <LinkedinShareButton url="https://a2aqi.com">
+                        <LinkedinIcon className="h-5 w-5 text-blue-600" />
+                    </LinkedinShareButton>
 
-                            <div className='flex items-center space-x-1'>
-                                <Eye color='black' className="h-5 w-5 text-gray-500" />
-                                <span className='text-sm'>{user.views}</span>
-                            </div>
-                        </div>
+                    {/* Views */}
+                    <div className="flex items-center space-x-1">
+                        <Eye className="h-5 w-5 text-gray-500" />
+                        <span className="text-sm">{views}</span>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
-
+    );
+};
