@@ -130,6 +130,7 @@ export default function AQIMap() {
             center={[lat, lng]}
             zoom={13}
             scrollWheelZoom={false}
+            dragging={false}
             className="h-full w-full z-0"
           >
             <TileLayer

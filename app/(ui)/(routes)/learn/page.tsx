@@ -186,7 +186,7 @@ const GridItem = ({ area, icon, title, description, gradient, onTitleClick }: Gr
                     style={{ background: gradient }}
                 />
 
-                <div className="border-0.75 relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
+                <div className="border-0.75 relative flex h-full flex-col justify-between gap-6 rounded-xl p-6 md:p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
                     <div className="relative flex flex-1 flex-col justify-between gap-3">
                         <div className="w-fit rounded-lg border border-gray-600 p-2">
                             {icon}

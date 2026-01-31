@@ -107,8 +107,8 @@ export function AQIDashboard() {
       </div>
 
       {/* Dashboard */}
-      <div className="max-w-[100rem] h-full mx-auto px-4 -mt-32 relative z-10 pb-12">
-        <Card className={`overflow-hidden shadow-2xl bg-gradient-to-br ${theme.bg}`}>
+      <div className="max-w-[100rem] mx-auto px-4 -mt-32 relative z-10 pb-12">
+        <Card className={` shadow-2xl bg-gradient-to-br ${theme.bg}`}>
 
           <div className="p-6 sm:p-8 lg:p-10 backdrop-blur-sm">
             {/* Header */}
@@ -251,7 +251,7 @@ export function AQIDashboard() {
                 <div className="relative w-full h-full max-w-[360px] rounded-3xl overflow-hidden">
 
                   <SparklesCore
-                    className="absolute inset-0"
+                    className="absolute inset-0 pointer-events-none"
                     background="transparent"
                     minSize={0.6}
                     maxSize={1.4}
